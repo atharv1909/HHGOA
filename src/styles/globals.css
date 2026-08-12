@@ -1,0 +1,171 @@
+@import './tokens.css';
+
+/* ═══════════════════════════════════════════════════════
+   HH GOA 2026 — GLOBAL STYLES & ANIMATIONS
+   ═══════════════════════════════════════════════════════ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--hh-green-primary);
+  /* Halftone matrix background */
+  background-image: 
+    radial-gradient(rgba(255, 247, 140, 0.15) 1px, transparent 1px),
+    radial-gradient(rgba(255, 0, 122, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+code, .mono {
+  font-family: var(--font-mono);
+}
+
+/* ── Marquee Animation ── */
+.marqueeContainer {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  background: var(--hh-yellow);
+  color: var(--hh-green-dark);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 8px 0;
+  border-top: 2px solid var(--hh-green-dark);
+  border-bottom: 2px solid var(--hh-green-dark);
+  user-select: none;
+}
+
+.marqueeTrack {
+  display: inline-block;
+  animation: marquee 22s linear infinite;
+  will-change: transform;
+}
+
+.marqueeContent {
+  display: inline-flex;
+  gap: 24px;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── Buttons ── */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  transition: all 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btnPrimary {
+  background: var(--hh-pink);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  padding: 14px 28px;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--hh-green-dark);
+  box-shadow: var(--shadow-chunky-yellow);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btnPrimary:hover {
+  background: var(--hh-pink-bright);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #FFF78C, var(--glow-pink);
+}
+
+.btnPrimary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #FFF78C;
+}
+
+.btnSecondary {
+  background: var(--hh-yellow);
+  color: var(--hh-green-dark);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 22px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--hh-green-dark);
+  box-shadow: var(--shadow-chunky-pink);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btnSecondary:hover {
+  background: var(--hh-yellow-bright);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #FF007A;
+}
+
+.btnSecondary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #FF007A;
+}
+
+/* ── Scrollbars ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--hh-green-bright);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--hh-yellow);
+}
+
+::selection {
+  background: var(--hh-pink);
+  color: #ffffff;
+}

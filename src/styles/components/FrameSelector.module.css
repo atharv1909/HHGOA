@@ -1,0 +1,119 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sectionTitle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--hh-yellow);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.strip {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: var(--space-2) var(--space-1);
+  scrollbar-width: none;
+}
+
+.strip::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--hh-green-dark);
+  background: var(--surface-dark-elevated);
+  cursor: pointer;
+  scroll-snap-align: center;
+  transition: all 150ms var(--ease-out);
+  min-width: 96px;
+}
+
+.chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--hh-pink);
+}
+
+.chipActive {
+  border-color: var(--hh-pink) !important;
+  box-shadow: 4px 4px 0px #FF007A, var(--glow-pink);
+  background: var(--hh-green-primary);
+}
+
+.chipPreview {
+  width: 76px;
+  height: 95px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chipPreview canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.chipName {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.chipActive .chipName {
+  color: var(--hh-yellow);
+}
+
+/* Filter Strip */
+.filterStrip {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding-bottom: var(--space-1);
+}
+
+.filterBtn {
+  background: var(--surface-dark-elevated);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.filterBtn:hover {
+  border-color: var(--hh-yellow);
+  color: var(--hh-yellow);
+}
+
+.filterActive {
+  background: var(--hh-pink) !important;
+  color: #ffffff !important;
+  border-color: var(--hh-pink) !important;
+  box-shadow: var(--shadow-chunky-yellow);
+}

@@ -1,0 +1,72 @@
+/* ═══════════════════════════════════════════════════════
+   HH GOA 2026 — ULTIMATE BRAND DESIGN SYSTEM
+   Derived from official live site & competitor benchmarks
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Brand Colors ── */
+  --hh-green-dark: #003827;
+  --hh-green-primary: #004D34;
+  --hh-green-bright: #0f7a3f;
+  --hh-yellow: #FFF78C;
+  --hh-yellow-bright: #F5D800;
+  --hh-pink: #FF007A;
+  --hh-pink-bright: #FF2A8D;
+  --hh-pink-muted: rgba(255, 0, 122, 0.15);
+  --hh-sand: #FBE6A2;
+  --hh-cream: #F7F3E9;
+
+  /* ── Surfaces ── */
+  --surface-dark: #021a14;
+  --surface-dark-elevated: #003323;
+  --surface-dark-card: #00422d;
+  --surface-light: #F7F3E9;
+
+  /* ── Text ── */
+  --text-primary: #F7F3E9;
+  --text-secondary: #cde6dd;
+  --text-muted: #649988;
+  --text-dark: #021a14;
+
+  /* ── Borders ── */
+  --border: rgba(0, 255, 150, 0.2);
+  --border-strong: #FF007A;
+  --border-yellow: #FFF78C;
+
+  /* ── Typography ── */
+  --font-display: var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), 'JetBrains Mono', monospace;
+
+  /* ── Spacing ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ── Radius ── */
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-pill: 9999px;
+
+  /* ── Shadows & Glows ── */
+  --shadow-chunky: 4px 4px 0px #021a14;
+  --shadow-chunky-pink: 4px 4px 0px #FF007A;
+  --shadow-chunky-yellow: 4px 4px 0px #FFF78C;
+  --glow-pink: 0 0 25px rgba(255, 0, 122, 0.4);
+  --glow-yellow: 0 0 25px rgba(255, 247, 140, 0.4);
+  --glow-green: 0 0 25px rgba(0, 255, 150, 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

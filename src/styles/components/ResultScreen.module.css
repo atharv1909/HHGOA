@@ -1,0 +1,168 @@
+.resultContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.imagePreviewWrapper {
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  position: relative;
+  background: var(--surface-dark-card);
+}
+
+.previewImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.actionsGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.buttonRow {
+  display: flex;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.primaryBtn {
+  flex: 1;
+  background: var(--accent-signal);
+  color: var(--text-on-accent);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-base);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-5);
+  box-shadow: var(--shadow-glow-signal);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.primaryBtn:hover {
+  background: var(--accent-signal-hover);
+}
+
+.secondaryBtn {
+  flex: 1;
+  background: var(--surface-dark-elevated);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-base);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-5);
+}
+
+.secondaryBtn:hover {
+  border-color: var(--primary);
+  color: var(--accent-signal);
+}
+
+.outlineBtn {
+  width: 100%;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.outlineBtn:hover {
+  border-color: var(--primary);
+  color: var(--text-primary);
+}
+
+/* Radar notification card */
+.radarCard {
+  width: 100%;
+  background: var(--surface-dark-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  position: relative;
+  overflow: hidden;
+}
+
+.radarCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--primary);
+}
+
+.radarHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--accent-signal);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.radarDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-green);
+  box-shadow: 0 0 8px var(--brand-green);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.radarText {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.radarLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--accent-signal);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  margin-top: var(--space-1);
+}
+
+.shareStatus {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-align: center;
+}

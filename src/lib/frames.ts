@@ -137,7 +137,7 @@ export const FRAMES: Record<string, FrameConfig> = {
     qrZone: { x: 490, y: 965, size: 130 },
 
     // Horizontal Barcode — bottom right inside yellow box
-    barcodeZone: { x: 650, y: 1030, width: 600, height: 65 },
+    barcodeZone: { x: 650, y: 1014, width: 600, height: 74 },
 
     textZones: {
       name: {
@@ -162,7 +162,7 @@ export const FRAMES: Record<string, FrameConfig> = {
       },
       builderId: {
         x: 650,
-        y: 968,
+        y: 980,
         maxWidth: 600,
         fontSize: 44,
         fontFamily: 'mono',

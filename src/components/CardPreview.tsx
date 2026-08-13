@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import { FrameConfig, loadCardImage } from '@/lib/frames';
-import { ProcessedImage, PhotoFilterMode, applyFilterToCanvas } from '@/lib/imageProcessor';
+import { FrameConfig } from '@/lib/frames';
+import { ProcessedImage, PhotoFilterMode } from '@/lib/imageProcessor';
 import { ImageTransform } from './PhotoEditor';
 import PhotoEditor from './PhotoEditor';
+import BarcodeSVG from './BarcodeSVG';
 import { formatBuilderId } from '@/lib/idGenerator';
-import { drawTextZone, drawSocialsZone, drawQrCode, drawBarcode } from '@/lib/cardRenderer';
 import styles from '@/styles/components/CardPreview.module.css';
 
 interface CardPreviewProps {
@@ -40,131 +40,20 @@ export default function CardPreview({
   allowFlip = true,
 }: CardPreviewProps) {
   const [isFlipped, setIsFlipped] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const bgCanvasRef = useRef<HTMLCanvasElement>(null);
+  const cardDomRef = useRef<HTMLDivElement>(null);
 
   const isPfp = format === 'pfp';
-  const photoZone = isPfp ? frame.pfpPhotoZone : frame.photoZone;
-
-  const baseW = 1748;
-  const baseH = isPfp ? 1080 : 1240;
-
-  const photoStyle = {
-    left: `${(photoZone.x / baseW) * 100}%`,
-    top: `${(photoZone.y / baseH) * 100}%`,
-    width: `${(photoZone.width / baseW) * 100}%`,
-    height: `${(photoZone.height / baseH) * 100}%`,
-    borderRadius: '0px',
-  };
+  const formattedId = formatBuilderId(builderId);
 
   const profileUrl =
     typeof window !== 'undefined'
       ? `${window.location.origin}/builder/${builderId}`
       : `https://hhgoa.com/builder/${builderId}`;
 
-  // Render Background Artwork canvas reliably
-  useEffect(() => {
-    const bgCanvas = bgCanvasRef.current;
-    if (!bgCanvas) return;
-    bgCanvas.width = baseW;
-    bgCanvas.height = baseH;
-    const ctx = bgCanvas.getContext('2d');
-    if (!ctx) return;
-
-    let active = true;
-
-    loadCardImage().then((artImg) => {
-      if (!active) return;
-      ctx.clearRect(0, 0, baseW, baseH);
-      ctx.drawImage(artImg, 0, 0, baseW, baseH);
-    }).catch(() => {
-      if (!active) return;
-      ctx.fillStyle = frame.bgColor;
-      ctx.fillRect(0, 0, baseW, baseH);
-    });
-
-    return () => {
-      active = false;
-    };
-  }, [frame, isPfp, baseW, baseH]);
-
-  // Render Foreground Overlay & Text canvas
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    canvas.width = baseW;
-    canvas.height = baseH;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const render = async () => {
-      ctx.clearRect(0, 0, baseW, baseH);
-
-      // Apply photo filter onto photo zone overlay if filter selected
-      if (filter !== 'natural') {
-        ctx.save();
-        ctx.beginPath();
-        ctx.rect(photoZone.x, photoZone.y, photoZone.width, photoZone.height);
-        ctx.clip();
-        applyFilterToCanvas(ctx, baseW, baseH, filter);
-        ctx.restore();
-      }
-
-      if (isPfp) {
-        frame.renderPfpDecorations(ctx, baseW, baseH);
-        return;
-      }
-
-      frame.renderDecorations(ctx, baseW, baseH);
-
-      const tz = frame.textZones;
-
-      drawTextZone(ctx, name, tz.name, { clearBg: true });
-      drawTextZone(ctx, stack ? `STACK / ROLE: ${stack.toUpperCase()}` : '', tz.stack, {
-        clearBg: true,
-      });
-      drawTextZone(ctx, title, tz.title);
-      drawTextZone(ctx, formatBuilderId(builderId), tz.builderId);
-
-      const now = new Date();
-      const months = [
-        'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
-        'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC',
-      ];
-      drawTextZone(ctx, `${months[now.getMonth()]} ${now.getFullYear()}`, tz.timestamp);
-
-      const hasSocials = Object.values(socials).some((v) => v && v.trim());
-      if (hasSocials) {
-        drawSocialsZone(ctx, socials, tz.socials, tz.socials.color);
-      }
-
-      await drawQrCode(ctx, profileUrl, frame.qrZone, {
-        dark: '#021a14',
-        light: '#ffffff',
-      });
-
-      drawBarcode(ctx, formatBuilderId(builderId), frame.barcodeZone, {
-        bar: '#021a14',
-      });
-    };
-
-    render().catch(() => {});
-  }, [
-    frame,
-    format,
-    name,
-    stack,
-    title,
-    builderId,
-    socials,
-    filter,
-    baseW,
-    baseH,
-    isPfp,
-    photoZone,
-    profileUrl,
-  ]);
+  const displayName = name && name.trim() ? name.trim() : 'Your Name';
+  const displayStack = stack && stack.trim()
+    ? `STACK / ROLE: ${stack.toUpperCase().trim()}`
+    : 'STACK / ROLE: RUST >& BACKEND';
 
   const handleCardClick = () => {
     if (allowFlip && !isPfp) {
@@ -172,13 +61,23 @@ export default function CardPreview({
     }
   };
 
+  const filterStyle = {
+    filter:
+      filter === 'goa-sunset'
+        ? 'sepia(30%) saturate(140%) hue-rotate(-15deg)'
+        : filter === 'riso-dither'
+        ? 'contrast(120%) saturate(150%) sepia(20%)'
+        : 'none',
+  };
+
   return (
     <div className={styles.previewWrapper}>
       <div
+        ref={cardDomRef}
+        id="dom-card-preview"
         className={`${styles.cardContainer} ${
           isFlipped ? styles.isFlipped : ''
         }`}
-        style={{ backgroundColor: frame.bgColor }}
         onClick={handleCardClick}
       >
         <div
@@ -186,34 +85,94 @@ export default function CardPreview({
             isPfp ? styles.aspectPfp : styles.aspectBuilderId
           }`}
         >
-          {/* FRONT */}
+          {/* FRONT OF THE CARD */}
           <div className={styles.cardFront}>
-            {/* Background Artwork Canvas (drawn behind photo) */}
-            <canvas
-              ref={bgCanvasRef}
-              className={styles.decorationCanvas}
-              style={{ zIndex: 0 }}
+            {/* Background Template Artwork (clean image with zero artifacts) */}
+            <div
+              className={styles.cleanBgLayer}
+              style={{ backgroundImage: `url('/clean_card.png')` }}
             />
 
-            {/* Photo Safe Zone (in middle layer) */}
-            <div className={styles.photoZoneWrapper} style={photoStyle}>
-              <PhotoEditor
-                image={image}
-                transform={transform}
-                onChangeTransform={onChangeTransform}
-              />
+            {/* 1. SCALLOPED PHOTO FRAME WINDOW (DOM ELEMENT) */}
+            <div className={styles.domPhotoZone}>
+              {/* Sunburst Rays SVG Backdrop */}
+              <svg
+                className={styles.sunburstRays}
+                viewBox="0 0 100 100"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g stroke="#FCE9AA" strokeWidth="1.8" opacity="0.85">
+                  <line x1="10" y1="10" x2="30" y2="30" />
+                  <line x1="20" y1="5" x2="35" y2="25" />
+                  <line x1="5" y1="20" x2="25" y2="35" />
+                  <line x1="40" y1="2" x2="45" y2="20" />
+                  <line x1="2" y1="40" x2="20" y2="45" />
+                  <line x1="60" y1="5" x2="55" y2="22" />
+                  <line x1="5" y1="60" x2="22" y2="55" />
+                  <line x1="80" y1="15" x2="70" y2="32" />
+                  <line x1="15" y1="80" x2="32" y2="70" />
+                </g>
+              </svg>
+
+              {/* Pink Scalloped Photo Window Container */}
+              <div className={styles.scallopedWindow} style={filterStyle}>
+                <PhotoEditor
+                  image={image}
+                  transform={transform}
+                  onChangeTransform={onChangeTransform}
+                />
+              </div>
             </div>
 
-            {/* Foreground Decorations Canvas (drawn on top of photo) */}
-            <canvas ref={canvasRef} className={styles.decorationCanvas} />
+            {/* 2. USER NAME (DOM ELEMENT) */}
+            <div className={styles.domNameZone}>
+              <h2 className={styles.nameText}>{displayName}</h2>
+            </div>
+
+            {/* 3. STACK / ROLE (DOM ELEMENT) */}
+            <div className={styles.domStackZone}>
+              <p className={styles.stackText}>{displayStack}</p>
+            </div>
+
+            {/* 4. YELLOW ID BADGE BOX (DOM ELEMENT) */}
+            <div className={styles.domYellowBox}>
+              {/* Left Zone: Compact White QR Code Plate */}
+              <div className={styles.qrPlate}>
+                <QRCodeSVG
+                  value={profileUrl}
+                  size={42}
+                  level="M"
+                  bgColor="#ffffff"
+                  fgColor="#012119"
+                  style={{ width: '100%', height: '100%' }}
+                />
+              </div>
+
+              {/* Right Zone: Builder ID & Horizontal Barcode */}
+              <div className={styles.idDetailsZone}>
+                <span className={styles.builderIdText}>{formattedId}</span>
+                <div className={styles.barcodeWrapper}>
+                  <BarcodeSVG value={builderId || 'HHG-5VJEQ'} color="#012119" height="100%" />
+                </div>
+              </div>
+            </div>
+
+            {/* 5. BUILDER CLASS CIRCLE BADGE (DOM ELEMENT) */}
+            <div className={styles.builderBadge}>
+              <div className={styles.badgeInner}>
+                <span>BUILDER</span>
+                <span>CLASS</span>
+              </div>
+            </div>
           </div>
 
-          {/* BACK (Builder ID only) */}
+          {/* BACK OF THE CARD (FOR FLIP ANIMATION) */}
           {!isPfp && (
             <div className={styles.cardBack}>
               <div className={styles.backHeader}>
                 <span className={styles.backTitle}>HACKER HOUSE GOA</span>
-                <span className={styles.backId}>{formatBuilderId(builderId)}</span>
+                <span className={styles.backId}>{formattedId}</span>
               </div>
 
               <div className={styles.qrBox}>
@@ -244,6 +203,7 @@ export default function CardPreview({
           )}
         </div>
       </div>
+
       {allowFlip && !isPfp && (
         <p className={styles.flipHint}>
           {isFlipped ? '🔄 Tap card to view front' : '🔄 Tap card to view back & QR'}

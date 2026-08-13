@@ -1,12 +1,9 @@
 // ═══════════════════════════════════════════════════════
-// HH GOA 2026 — CANVAS EXPORTER
-// Correct Layer Ordering:
-// 1. Background Fill & Template Image (card.png)
-// 2. User Photo (Clipped to photo zone + zoom/pan + filter)
-// 3. Text, QR Code, and Barcode Overlay
+// HH GOA 2026 — HIGH-RES DOM & CANVAS EXPORTER
+// Pure clean template rendering without any fillRect cover patches!
 // ═══════════════════════════════════════════════════════
 
-import { FrameConfig, loadCardImage } from './frames';
+import { FrameConfig } from './frames';
 import { formatBuilderId } from './idGenerator';
 import { PhotoFilterMode, applyFilterToCanvas } from './imageProcessor';
 import { drawTextZone, drawSocialsZone, drawQrCode, drawBarcode } from './cardRenderer';
@@ -27,6 +24,24 @@ export interface ExportData {
 const BUILDER_ID_WIDTH = 1748;
 const BUILDER_ID_HEIGHT = 1240;
 const PFP_SIZE = 1080;
+
+let cleanCardImg: HTMLImageElement | null = null;
+
+function loadCleanCardImage(): Promise<HTMLImageElement> {
+  if (cleanCardImg && cleanCardImg.complete) {
+    return Promise.resolve(cleanCardImg);
+  }
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      cleanCardImg = img;
+      resolve(img);
+    };
+    img.onerror = (err) => reject(err);
+    img.src = '/clean_card.png';
+  });
+}
 
 async function ensureFontsLoaded(): Promise<void> {
   if (typeof document === 'undefined') return;
@@ -49,18 +64,20 @@ export async function exportCard(data: ExportData): Promise<Blob> {
   canvas.height = height;
   const ctx = canvas.getContext('2d')!;
 
-  // 1. Background Fill & Base Template Image
+  // 1. Pristine Clean Background Template Image (clean_card.png)
   ctx.fillStyle = data.frame.bgColor;
   ctx.fillRect(0, 0, width, height);
 
   if (!isPfp) {
-    const artImg = await loadCardImage();
-    if (artImg && artImg.complete && artImg.naturalWidth > 0) {
+    try {
+      const artImg = await loadCleanCardImage();
       ctx.drawImage(artImg, 0, 0, width, height);
+    } catch {
+      // Fallback dark green background fill
     }
   }
 
-  // 2. User Photo — clipped to inner pink window
+  // 2. User Photo — clipped to photo window
   const photoZone = isPfp ? data.frame.pfpPhotoZone : data.frame.photoZone;
 
   ctx.save();
@@ -88,21 +105,38 @@ export async function exportCard(data: ExportData): Promise<Blob> {
 
   ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
 
-  if (data.filter) {
+  if (data.filter && data.filter !== 'natural') {
     applyFilterToCanvas(ctx, width, height, data.filter);
   }
   ctx.restore();
 
-  // 3. Text & Scannables Overlay
+  // 3. Clean DOM-matched Text & Scannables Overlay (No cover-up patches needed!)
   if (!isPfp) {
     const tz = data.frame.textZones;
-    drawTextZone(ctx, data.name, tz.name, { clearBg: true });
-    drawTextZone(ctx, data.stack ? `STACK / ROLE: ${data.stack.toUpperCase()}` : '', tz.stack, {
-      clearBg: true,
-    });
-    drawTextZone(ctx, data.title, tz.title);
+
+    // Draw Name (Creamy Gold, large display font)
+    const displayName = data.name && data.name.trim() ? data.name.trim() : 'Your Name';
+    drawTextZone(ctx, displayName, tz.name, { clearBg: false });
+
+    // Draw Stack / Role (White monospace font)
+    const displayStack = data.stack && data.stack.trim()
+      ? `STACK / ROLE: ${data.stack.toUpperCase().trim()}`
+      : 'STACK / ROLE: RUST >& BACKEND';
+    drawTextZone(ctx, displayStack, tz.stack, { clearBg: false });
+
+    // Draw Yellow Box Background
+    const yb = data.frame.idBoxZone;
+    ctx.save();
+    ctx.fillStyle = '#FFD200';
+    ctx.beginPath();
+    ctx.roundRect(yb.x, yb.y, yb.width, yb.height, 20);
+    ctx.fill();
+    ctx.restore();
+
+    // Draw Builder ID in Yellow Box
     drawTextZone(ctx, formatBuilderId(data.builderId), tz.builderId);
 
+    // Draw Timestamp & Socials if present
     const now = new Date();
     const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
     const timestamp = `${months[now.getMonth()]} ${now.getFullYear()}`;
@@ -117,13 +151,16 @@ export async function exportCard(data: ExportData): Promise<Blob> {
         ? `${window.location.origin}/builder/${data.builderId}`
         : `https://hhgoa.com/builder/${data.builderId}`;
 
+    // Draw QR code inside Yellow Box
     await drawQrCode(ctx, profileUrl, data.frame.qrZone, {
-      dark: '#021a14',
+      dark: '#012119',
       light: '#ffffff',
     });
 
+    // Draw Barcode inside Yellow Box
     drawBarcode(ctx, formatBuilderId(data.builderId), data.frame.barcodeZone, {
-      bar: '#021a14',
+      bar: '#012119',
+      bg: '#FFD200',
     });
   }
 

@@ -1,0 +1,43 @@
+.frameContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sunburstBg {
+  position: absolute;
+  top: -25%;
+  left: -25%;
+  width: 150%;
+  height: 150%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.scallopedOuter {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #FFF5D6;
+  padding: 12px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+
+  /* Scalloped teeth effect via CSS radial mask pattern */
+  background-image: radial-gradient(circle at 10px 10px, #FFF5D6 12px, transparent 13px);
+  background-size: 20px 20px;
+}
+
+.photoContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #F8E3EC;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.15);
+}

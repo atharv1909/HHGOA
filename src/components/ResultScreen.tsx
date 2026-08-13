@@ -10,6 +10,7 @@ interface ResultScreenProps {
   title: string;
   stack: string;
   format: 'builder-id' | 'pfp';
+  socials?: Record<string, string>;
   onReset: () => void;
 }
 
@@ -19,6 +20,7 @@ export default function ResultScreen({
   title,
   stack,
   format,
+  socials = {},
   onReset,
 }: ResultScreenProps) {
   const [imageUrl, setImageUrl] = useState<string>('');
@@ -52,6 +54,29 @@ export default function ResultScreen({
     }
   };
 
+  const getSocialLink = (key: string, val: string) => {
+    if (!val) return '';
+    const clean = val.trim();
+    if (clean.startsWith('http://') || clean.startsWith('https://')) return clean;
+    if (key === 'x') return `https://x.com/${clean.replace(/^@/, '')}`;
+    if (key === 'github') return `https://github.com/${clean.replace(/^@/, '')}`;
+    if (key === 'linkedin') return `https://linkedin.com/in/${clean.replace(/^@/, '')}`;
+    if (key === 'email') return `mailto:${clean}`;
+    if (key === 'website') return `https://${clean}`;
+    return clean;
+  };
+
+  const socialIcons: Record<string, { icon: string; label: string }> = {
+    x: { icon: '𝕏', label: 'X / Twitter' },
+    github: { icon: '💻', label: 'GitHub' },
+    linkedin: { icon: '💼', label: 'LinkedIn' },
+    website: { icon: '🌐', label: 'Website' },
+    email: { icon: '✉️', label: 'Email' },
+    phone: { icon: '📞', label: 'Phone' },
+  };
+
+  const activeSocialKeys = Object.keys(socials).filter((k) => socials[k] && socials[k].trim() !== '');
+
   return (
     <div className={styles.resultContainer}>
       <div className={styles.imagePreviewWrapper}>
@@ -63,6 +88,29 @@ export default function ResultScreen({
           />
         )}
       </div>
+
+      {/* Clickable Social Links Row */}
+      {activeSocialKeys.length > 0 && (
+        <div className={styles.socialsRow} aria-label="Builder social links">
+          {activeSocialKeys.map((key) => {
+            const url = getSocialLink(key, socials[key]);
+            const meta = socialIcons[key] || { icon: '🔗', label: key };
+            return (
+              <a
+                key={key}
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                className={styles.socialIconBtn}
+                title={`${meta.label}: ${socials[key]}`}
+              >
+                <span className={styles.socialIconSymbol}>{meta.icon}</span>
+                <span className={styles.socialIconText}>{socials[key]}</span>
+              </a>
+            );
+          })}
+        </div>
+      )}
 
       <div className={styles.actionsGroup}>
         <div className={styles.buttonRow}>

@@ -2,26 +2,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-6);
+  gap: 20px;
   width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  animation: fadeIn var(--duration-normal) var(--ease-out);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .imagePreviewWrapper {
   width: 100%;
-  border-radius: var(--radius-md);
+  max-width: 440px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--border);
-  position: relative;
-  background: var(--surface-dark-card);
+  box-shadow: var(--shadow-chunky-pink), var(--glow-pink);
+  border: 2px solid var(--hh-yellow);
 }
 
 .previewImage {
@@ -30,139 +21,182 @@
   display: block;
 }
 
+/* Clickable Social Icons Row */
+.socialsRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.socialIconBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--surface-dark-elevated);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--hh-yellow);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 150ms ease;
+}
+
+.socialIconBtn:hover {
+  background: var(--hh-pink);
+  border-color: var(--hh-pink);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: var(--glow-pink);
+}
+
+.socialIconSymbol {
+  font-size: 15px;
+}
+
+.socialIconText {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Actions Group */
 .actionsGroup {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 12px;
   width: 100%;
+  max-width: 440px;
 }
 
 .buttonRow {
   display: flex;
-  gap: var(--space-3);
+  gap: 12px;
   width: 100%;
 }
 
 .primaryBtn {
   flex: 1;
-  background: var(--accent-signal);
-  color: var(--text-on-accent);
+  background: var(--hh-pink);
+  color: #ffffff;
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--text-base);
-  border-radius: var(--radius-sm);
-  padding: var(--space-3) var(--space-5);
-  box-shadow: var(--shadow-glow-signal);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+  font-size: 16px;
+  font-weight: 900;
+  border-radius: var(--radius-pill);
+  padding: 14px 20px;
+  border: 2px solid var(--hh-green-dark);
+  box-shadow: var(--shadow-chunky-yellow);
+  cursor: pointer;
+  transition: transform 150ms ease, background 150ms ease;
 }
 
-.primaryBtn:hover {
-  background: var(--accent-signal-hover);
+.primaryBtn:hover:not(:disabled) {
+  background: var(--hh-pink-bright);
+  transform: translate(-2px, -2px);
+}
+
+.primaryBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .secondaryBtn {
   flex: 1;
-  background: var(--surface-dark-elevated);
-  color: var(--text-primary);
+  background: var(--hh-yellow);
+  color: var(--hh-green-dark);
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--text-base);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: var(--space-3) var(--space-5);
+  font-size: 16px;
+  font-weight: 900;
+  border-radius: var(--radius-pill);
+  padding: 14px 20px;
+  border: 2px solid var(--hh-green-dark);
+  box-shadow: var(--shadow-chunky);
+  cursor: pointer;
+  transition: transform 150ms ease;
 }
 
 .secondaryBtn:hover {
-  border-color: var(--primary);
-  color: var(--accent-signal);
+  transform: translate(-2px, -2px);
 }
 
 .outlineBtn {
   width: 100%;
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  border: 1px dashed var(--border);
-  border-radius: var(--radius-sm);
-  padding: var(--space-2) var(--space-4);
-  margin-top: var(--space-2);
+  font-size: 13px;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease;
 }
 
 .outlineBtn:hover {
-  border-color: var(--primary);
-  color: var(--text-primary);
+  border-color: var(--hh-pink);
+  color: var(--hh-pink);
 }
 
-/* Radar notification card */
+.shareStatus {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--hh-yellow);
+  text-align: center;
+}
+
+/* Radar Integration Card */
 .radarCard {
   width: 100%;
+  max-width: 440px;
   background: var(--surface-dark-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: var(--space-4) var(--space-5);
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  position: relative;
-  overflow: hidden;
-}
-
-.radarCard::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--primary);
+  gap: 8px;
 }
 
 .radarHeader {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: 8px;
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--accent-signal);
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--hh-yellow);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .radarDot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--brand-green);
-  box-shadow: 0 0 8px var(--brand-green);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  background: #00FF96;
+  box-shadow: 0 0 8px #00FF96;
 }
 
 .radarText {
-  font-size: var(--text-sm);
+  font-family: var(--font-mono);
+  font-size: 12px;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 .radarLink {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  color: var(--accent-signal);
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  margin-top: var(--space-1);
+  font-size: 12px;
+  color: var(--hh-pink);
+  text-decoration: none;
+  font-weight: 700;
 }
 
-.shareStatus {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-  text-align: center;
+.radarLink:hover {
+  text-decoration: underline;
 }

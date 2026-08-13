@@ -10,6 +10,7 @@
 import { FrameConfig } from './frames';
 import { formatBuilderId } from './idGenerator';
 import { PhotoFilterMode, applyFilterToCanvas } from './imageProcessor';
+import { drawTextZone, drawSocialsZone, drawQrCode } from './cardRenderer';
 
 export interface ExportData {
   image: ImageBitmap;
@@ -34,59 +35,6 @@ async function ensureFontsLoaded(): Promise<void> {
     await document.fonts.ready;
   } catch {
     // Font loading fallback
-  }
-}
-
-function drawTextWithFont(
-  ctx: CanvasRenderingContext2D,
-  text: string,
-  x: number,
-  y: number,
-  zone: { fontSize: number; fontFamily: 'display' | 'mono'; color: string; maxWidth: number; align?: CanvasTextAlign; weight?: string }
-) {
-  const family = zone.fontFamily === 'mono'
-    ? '"JetBrains Mono", monospace'
-    : '"Space Grotesk", sans-serif';
-  const weight = zone.weight || '700';
-  ctx.font = `${weight} ${zone.fontSize}px ${family}`;
-  ctx.fillStyle = zone.color;
-  ctx.textAlign = zone.align || 'left';
-  ctx.textBaseline = 'top';
-
-  let displayText = text;
-  while (ctx.measureText(displayText).width > zone.maxWidth && displayText.length > 1) {
-    displayText = displayText.slice(0, -1);
-  }
-  if (displayText !== text) displayText += '…';
-
-  ctx.fillText(displayText, x, y);
-}
-
-function drawSocialsRow(
-  ctx: CanvasRenderingContext2D,
-  socials: Record<string, string>,
-  startX: number,
-  startY: number,
-  color: string
-) {
-  const entries = Object.entries(socials).filter(([, v]) => v.trim());
-  if (entries.length === 0) return;
-
-  ctx.font = '700 16px "JetBrains Mono", monospace';
-  ctx.fillStyle = color;
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'top';
-
-  let x = startX;
-  const y = startY;
-
-  for (let i = 0; i < entries.length; i++) {
-    const [key, value] = entries[i];
-    const prefix = key === 'x' ? '@' : key === 'github' ? 'gh/' : key === 'website' ? '🔗 ' : key === 'email' ? '✉ ' : '';
-    const text = `${prefix}${value}`;
-    if (x + ctx.measureText(text).width > startX + 900) break;
-    ctx.fillText(text, x, y);
-    x += ctx.measureText(text).width + 24;
   }
 }
 
@@ -162,20 +110,31 @@ export async function exportCard(data: ExportData): Promise<Blob> {
   // 5. Text (Builder ID format)
   if (!isPfp) {
     const tz = data.frame.textZones;
-    drawTextWithFont(ctx, data.name, tz.name.x, tz.name.y, tz.name);
-    drawTextWithFont(ctx, data.stack, tz.stack.x, tz.stack.y, tz.stack);
-    drawTextWithFont(ctx, data.title, tz.title.x, tz.title.y, tz.title);
-    drawTextWithFont(ctx, formatBuilderId(data.builderId), tz.builderId.x, tz.builderId.y, tz.builderId);
+    drawTextZone(ctx, data.name, tz.name);
+    drawTextZone(ctx, data.stack, tz.stack);
+    drawTextZone(ctx, data.title, tz.title);
+    drawTextZone(ctx, formatBuilderId(data.builderId), tz.builderId);
 
     const now = new Date();
     const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
     const timestamp = `${months[now.getMonth()]} ${now.getFullYear()}`;
-    drawTextWithFont(ctx, timestamp, tz.timestamp.x, tz.timestamp.y, tz.timestamp);
+    drawTextZone(ctx, timestamp, tz.timestamp);
 
+    // Socials get their OWN zone — never inherits builderId/timestamp's spot.
     if (data.socials) {
-      const socialsColor = data.frame.paletteMode === 'dark' ? '#00FF96' : '#FF007A';
-      drawSocialsRow(ctx, data.socials, tz.title.x, tz.title.y + 40, socialsColor);
+      const socialsColor = tz.socials.color;
+      drawSocialsZone(ctx, data.socials, tz.socials, socialsColor);
     }
+
+    // 6. Scannable QR — unique per builder, encodes their public profile URL.
+    const profileUrl =
+      typeof window !== 'undefined'
+        ? `${window.location.origin}/builder/${data.builderId}`
+        : `https://hhgoa.com/builder/${data.builderId}`;
+    await drawQrCode(ctx, profileUrl, data.frame.qrZone, {
+      dark: data.frame.paletteMode === 'dark' ? '#021a14' : '#021a14',
+      light: '#ffffff',
+    });
   }
 
   return new Promise((resolve, reject) => {

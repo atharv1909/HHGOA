@@ -21,12 +21,18 @@ export interface FrameConfig {
   paletteMode: 'dark' | 'light';
   bgColor: string;
   photoZone: { x: number; y: number; width: number; height: number };
+  /** Square QR code encoding the public builder-profile URL, drawn on
+   *  the FRONT of the card, directly above the builderId text. */
+  qrZone: { x: number; y: number; size: number };
   textZones: {
     name: TextZone;
     stack: TextZone;
     title: TextZone;
     builderId: TextZone;
     timestamp: TextZone;
+    /** Dedicated zone for the optional-socials row — must never share
+     *  coordinates with builderId/timestamp, or they'll overlap. */
+    socials: TextZone;
   };
   renderBackground?: (ctx: CanvasRenderingContext2D, w: number, h: number) => void;
   renderDecorations: (ctx: CanvasRenderingContext2D, w: number, h: number) => void;
@@ -99,12 +105,16 @@ const GOA_GENESIS: FrameConfig = {
   paletteMode: 'light',
   bgColor: '#012119',
   photoZone: { x: 240, y: 340, width: 600, height: 600 },
+  // QR sits centered, directly above the HHG-XXXXX line.
+  qrZone: { x: 494, y: 1158, size: 92 },
   textZones: {
-    name: { x: 540, y: 1010, maxWidth: 960, fontSize: 48, fontFamily: 'display', color: '#021a14', align: 'center', weight: '900' },
-    stack: { x: 540, y: 1070, maxWidth: 800, fontSize: 24, fontFamily: 'mono', color: '#FF007A', align: 'center', weight: '800' },
-    title: { x: 540, y: 1115, maxWidth: 800, fontSize: 22, fontFamily: 'mono', color: '#004D34', align: 'center', weight: '700' },
-    builderId: { x: 540, y: 1165, maxWidth: 400, fontSize: 20, fontFamily: 'mono', color: '#004D34', align: 'center', weight: '800' },
-    timestamp: { x: 540, y: 1205, maxWidth: 400, fontSize: 14, fontFamily: 'mono', color: 'rgba(2,26,20,0.6)', align: 'center' },
+    // Hierarchy: name > stack/role > builder title > socials/ID/timestamp
+    name: { x: 540, y: 985, maxWidth: 940, fontSize: 58, fontFamily: 'display', color: '#021a14', align: 'center', weight: '900' },
+    stack: { x: 540, y: 1053, maxWidth: 860, fontSize: 28, fontFamily: 'mono', color: '#FF007A', align: 'center', weight: '800' },
+    title: { x: 540, y: 1093, maxWidth: 860, fontSize: 23, fontFamily: 'mono', color: '#004D34', align: 'center', weight: '700' },
+    socials: { x: 540, y: 1130, maxWidth: 840, fontSize: 17, fontFamily: 'mono', color: '#004D34', align: 'center', weight: '700' },
+    builderId: { x: 540, y: 1258, maxWidth: 500, fontSize: 24, fontFamily: 'mono', color: '#021a14', align: 'center', weight: '800' },
+    timestamp: { x: 540, y: 1289, maxWidth: 500, fontSize: 13, fontFamily: 'mono', color: 'rgba(2,26,20,0.55)', align: 'center' },
   },
   renderBackground: (ctx, w) => {
     const artImg = getFrameImage('/brand/frame_art_goa_genesis.png');
@@ -165,12 +175,12 @@ const GOA_GENESIS: FrameConfig = {
     ctx.arc(540, 640, 303, 0, Math.PI * 2);
     ctx.stroke();
 
-    // Sand Data Banner Box
+    // Sand Data Banner Box (grown to fit name/stack/title/socials/QR/ID)
     ctx.fillStyle = '#FFF78C';
-    ctx.fillRect(40, 960, w - 80, 270);
+    ctx.fillRect(40, 960, w - 80, 330);
     ctx.strokeStyle = '#021a14';
     ctx.lineWidth = 4;
-    ctx.strokeRect(40, 960, w - 80, 270);
+    ctx.strokeRect(40, 960, w - 80, 330);
 
     // Tagline
     ctx.fillStyle = '#FFF78C';
@@ -215,12 +225,15 @@ const HACKER_HAVEN: FrameConfig = {
   paletteMode: 'dark',
   bgColor: '#011c14',
   photoZone: { x: 120, y: 240, width: 840, height: 680 },
+  qrZone: { x: 496, y: 1150, size: 84 },
   textZones: {
-    name: { x: 120, y: 980, maxWidth: 840, fontSize: 48, fontFamily: 'display', color: '#FFF78C', weight: '900' },
-    stack: { x: 120, y: 1045, maxWidth: 600, fontSize: 24, fontFamily: 'mono', color: '#FF007A', weight: '800' },
-    title: { x: 120, y: 1090, maxWidth: 600, fontSize: 22, fontFamily: 'mono', color: '#00FF96', weight: '600' },
-    builderId: { x: 960, y: 1045, maxWidth: 300, fontSize: 22, fontFamily: 'mono', color: '#FFF78C', align: 'right', weight: '800' },
-    timestamp: { x: 960, y: 1085, maxWidth: 300, fontSize: 14, fontFamily: 'mono', color: 'rgba(255,255,255,0.6)', align: 'right' },
+    // Hierarchy: name > stack/role > builder title > socials/ID/timestamp
+    name: { x: 120, y: 970, maxWidth: 840, fontSize: 56, fontFamily: 'display', color: '#FFF78C', weight: '900' },
+    stack: { x: 120, y: 1042, maxWidth: 700, fontSize: 26, fontFamily: 'mono', color: '#FF007A', weight: '800' },
+    title: { x: 120, y: 1082, maxWidth: 700, fontSize: 22, fontFamily: 'mono', color: '#00FF96', weight: '600' },
+    socials: { x: 540, y: 1122, maxWidth: 900, fontSize: 16, fontFamily: 'mono', color: '#00FF96', align: 'center', weight: '700' },
+    builderId: { x: 540, y: 1242, maxWidth: 500, fontSize: 22, fontFamily: 'mono', color: '#FFF78C', align: 'center', weight: '800' },
+    timestamp: { x: 540, y: 1272, maxWidth: 500, fontSize: 12, fontFamily: 'mono', color: 'rgba(255,255,255,0.6)', align: 'center' },
   },
   renderBackground: (ctx, w) => {
     const artImg = getFrameImage('/brand/frame_art_hacker_haven.png');
@@ -253,10 +266,10 @@ const HACKER_HAVEN: FrameConfig = {
     ctx.strokeRect(117, 237, 846, 686);
 
     ctx.fillStyle = '#01281d';
-    ctx.fillRect(40, 935, w - 80, 280);
+    ctx.fillRect(40, 935, w - 80, 355);
     ctx.strokeStyle = '#00FF96';
     ctx.lineWidth = 3;
-    ctx.strokeRect(40, 935, w - 80, 280);
+    ctx.strokeRect(40, 935, w - 80, 355);
 
     ctx.fillStyle = '#FFF78C';
     ctx.font = '700 13px "JetBrains Mono", monospace';
@@ -289,12 +302,15 @@ const SUNSET_RISO: FrameConfig = {
   paletteMode: 'light',
   bgColor: '#FFF78C',
   photoZone: { x: 120, y: 220, width: 840, height: 720 },
+  qrZone: { x: 496, y: 1160, size: 84 },
   textZones: {
-    name: { x: 120, y: 980, maxWidth: 840, fontSize: 52, fontFamily: 'display', color: '#FF007A', weight: '900' },
-    stack: { x: 120, y: 1050, maxWidth: 600, fontSize: 26, fontFamily: 'mono', color: '#004D34', weight: '800' },
-    title: { x: 120, y: 1095, maxWidth: 600, fontSize: 22, fontFamily: 'mono', color: '#021a14', weight: '600' },
-    builderId: { x: 960, y: 1050, maxWidth: 300, fontSize: 22, fontFamily: 'mono', color: '#FF007A', align: 'right', weight: '900' },
-    timestamp: { x: 960, y: 1090, maxWidth: 300, fontSize: 14, fontFamily: 'mono', color: 'rgba(0,77,52,0.6)', align: 'right' },
+    // Hierarchy: name > stack/role > builder title > socials/ID/timestamp
+    name: { x: 120, y: 980, maxWidth: 840, fontSize: 58, fontFamily: 'display', color: '#FF007A', weight: '900' },
+    stack: { x: 120, y: 1052, maxWidth: 700, fontSize: 28, fontFamily: 'mono', color: '#004D34', weight: '800' },
+    title: { x: 120, y: 1094, maxWidth: 700, fontSize: 23, fontFamily: 'mono', color: '#021a14', weight: '600' },
+    socials: { x: 540, y: 1134, maxWidth: 900, fontSize: 17, fontFamily: 'mono', color: '#004D34', align: 'center', weight: '700' },
+    builderId: { x: 540, y: 1252, maxWidth: 500, fontSize: 22, fontFamily: 'mono', color: '#FF007A', align: 'center', weight: '900' },
+    timestamp: { x: 540, y: 1280, maxWidth: 500, fontSize: 12, fontFamily: 'mono', color: 'rgba(0,77,52,0.6)', align: 'center' },
   },
   renderBackground: (ctx, w) => {
     const artImg = getFrameImage('/brand/frame_art_sunset_riso.png');
@@ -358,12 +374,15 @@ const CYBER_PARADISE: FrameConfig = {
   paletteMode: 'dark',
   bgColor: '#00281C',
   photoZone: { x: 100, y: 240, width: 880, height: 680 },
+  qrZone: { x: 496, y: 1150, size: 84 },
   textZones: {
-    name: { x: 100, y: 970, maxWidth: 880, fontSize: 46, fontFamily: 'display', color: '#FFFFFF', weight: '900' },
-    stack: { x: 100, y: 1030, maxWidth: 600, fontSize: 24, fontFamily: 'mono', color: '#00F0FF', weight: '700' },
-    title: { x: 100, y: 1075, maxWidth: 600, fontSize: 20, fontFamily: 'mono', color: '#FFF78C', weight: '600' },
-    builderId: { x: 980, y: 1030, maxWidth: 300, fontSize: 20, fontFamily: 'mono', color: '#FFF78C', align: 'right', weight: '800' },
-    timestamp: { x: 980, y: 1065, maxWidth: 300, fontSize: 13, fontFamily: 'mono', color: 'rgba(255,255,255,0.6)', align: 'right' },
+    // Hierarchy: name > stack/role > builder title > socials/ID/timestamp
+    name: { x: 100, y: 970, maxWidth: 880, fontSize: 56, fontFamily: 'display', color: '#FFFFFF', weight: '900' },
+    stack: { x: 100, y: 1042, maxWidth: 700, fontSize: 26, fontFamily: 'mono', color: '#00F0FF', weight: '700' },
+    title: { x: 100, y: 1082, maxWidth: 700, fontSize: 22, fontFamily: 'mono', color: '#FFF78C', weight: '600' },
+    socials: { x: 540, y: 1122, maxWidth: 900, fontSize: 16, fontFamily: 'mono', color: '#00F0FF', align: 'center', weight: '700' },
+    builderId: { x: 540, y: 1242, maxWidth: 500, fontSize: 22, fontFamily: 'mono', color: '#FFF78C', align: 'center', weight: '800' },
+    timestamp: { x: 540, y: 1272, maxWidth: 500, fontSize: 12, fontFamily: 'mono', color: 'rgba(255,255,255,0.6)', align: 'center' },
   },
   renderBackground: (ctx, w) => {
     const artImg = getFrameImage('/brand/frame_art_cyber_paradise.png');
@@ -396,10 +415,10 @@ const CYBER_PARADISE: FrameConfig = {
     ctx.strokeRect(98, 238, 884, 684);
 
     ctx.fillStyle = '#001a12';
-    ctx.fillRect(40, 930, w - 80, 280);
+    ctx.fillRect(40, 930, w - 80, 355);
     ctx.strokeStyle = '#00F0FF';
     ctx.lineWidth = 2;
-    ctx.strokeRect(40, 930, w - 80, 280);
+    ctx.strokeRect(40, 930, w - 80, 355);
 
     ctx.fillStyle = '#FFF78C';
     ctx.font = '400 12px "JetBrains Mono", monospace';

@@ -7,6 +7,7 @@ import { ProcessedImage, PhotoFilterMode, applyFilterToCanvas } from '@/lib/imag
 import { ImageTransform } from './PhotoEditor';
 import PhotoEditor from './PhotoEditor';
 import { formatBuilderId } from '@/lib/idGenerator';
+import { drawTextZone, drawSocialsZone, drawQrCode } from '@/lib/cardRenderer';
 import styles from '@/styles/components/CardPreview.module.css';
 
 interface CardPreviewProps {
@@ -50,6 +51,11 @@ export default function CardPreview({
 
   const isCircular = frame.id === 'goa-genesis' && !isPfp;
 
+  const profileUrl =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}/builder/${builderId}`
+      : `https://hhgoa.com/builder/${builderId}`;
+
   const photoStyle = {
     left: `${(photoZone.x / baseW) * 100}%`,
     top: `${(photoZone.y / baseH) * 100}%`,
@@ -83,103 +89,66 @@ export default function CardPreview({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    ctx.clearRect(0, 0, baseW, baseH);
+    const render = async () => {
+      ctx.clearRect(0, 0, baseW, baseH);
 
-    // Apply photo filter onto photo zone overlay if filter selected
-    if (filter !== 'natural') {
-      ctx.save();
-      ctx.beginPath();
-      if (isCircular) {
-        const cx = photoZone.x + photoZone.width / 2;
-        const cy = photoZone.y + photoZone.height / 2;
-        ctx.arc(cx, cy, photoZone.width / 2, 0, Math.PI * 2);
-      } else {
-        ctx.rect(photoZone.x, photoZone.y, photoZone.width, photoZone.height);
+      // Apply photo filter onto photo zone overlay if filter selected
+      if (filter !== 'natural') {
+        ctx.save();
+        ctx.beginPath();
+        if (isCircular) {
+          const cx = photoZone.x + photoZone.width / 2;
+          const cy = photoZone.y + photoZone.height / 2;
+          ctx.arc(cx, cy, photoZone.width / 2, 0, Math.PI * 2);
+        } else {
+          ctx.rect(photoZone.x, photoZone.y, photoZone.width, photoZone.height);
+        }
+        ctx.clip();
+        applyFilterToCanvas(ctx, baseW, baseH, filter);
+        ctx.restore();
       }
-      ctx.clip();
-      applyFilterToCanvas(ctx, baseW, baseH, filter);
-      ctx.restore();
-    }
 
-    // Frame decorations (borders, titles, stamps)
-    if (isPfp) {
-      frame.renderPfpDecorations(ctx, baseW, baseH);
-    } else {
+      // Frame decorations (borders, titles, stamps)
+      if (isPfp) {
+        frame.renderPfpDecorations(ctx, baseW, baseH);
+        return;
+      }
+
       frame.renderDecorations(ctx, baseW, baseH);
 
       const tz = frame.textZones;
 
-      const drawText = (
-        text: string,
-        zone: typeof tz.name,
-        fallbackText: string = ''
-      ) => {
-        if (!text && !fallbackText) return;
-        const val = text || fallbackText;
-        const family =
-          zone.fontFamily === 'mono'
-            ? '"JetBrains Mono", monospace'
-            : '"Space Grotesk", sans-serif';
-        const weight = zone.weight || '700';
-
-        ctx.font = `${weight} ${zone.fontSize}px ${family}`;
-        ctx.fillStyle = text ? zone.color : 'rgba(150, 150, 150, 0.4)';
-        ctx.textAlign = zone.align || 'left';
-        ctx.textBaseline = 'top';
-
-        let displayText = val;
-        while (
-          ctx.measureText(displayText).width > zone.maxWidth &&
-          displayText.length > 1
-        ) {
-          displayText = displayText.slice(0, -1);
-        }
-        if (displayText !== val) displayText += '…';
-
-        ctx.fillText(displayText, zone.x, zone.y);
-      };
-
-      drawText(name, tz.name, 'YOUR NAME');
-      drawText(stack, tz.stack, 'STACK / ROLE');
-      drawText(title, tz.title, 'BUILDER TITLE');
-      drawText(formatBuilderId(builderId), tz.builderId);
+      drawTextZone(ctx, name, tz.name, { placeholder: 'YOUR NAME' });
+      drawTextZone(ctx, stack, tz.stack, { placeholder: 'STACK / ROLE' });
+      drawTextZone(ctx, title, tz.title, { placeholder: 'BUILDER TITLE' });
+      drawTextZone(ctx, formatBuilderId(builderId), tz.builderId);
 
       const now = new Date();
       const months = [
         'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
         'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC',
       ];
-      drawText(`${months[now.getMonth()]} ${now.getFullYear()}`, tz.timestamp);
+      drawTextZone(ctx, `${months[now.getMonth()]} ${now.getFullYear()}`, tz.timestamp);
 
-      const socialEntries = Object.entries(socials).filter(([, v]) => v.trim());
-      if (socialEntries.length > 0) {
-        ctx.font = '700 16px "JetBrains Mono", monospace';
-        ctx.fillStyle =
-          frame.paletteMode === 'dark' ? '#00FF96' : '#FF007A';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-
-        let sx = tz.title.x;
-        const sy = tz.title.y + 40;
-
-        for (const [key, value] of socialEntries) {
-          const prefix =
-            key === 'x'
-              ? '@'
-              : key === 'github'
-              ? 'gh/'
-              : key === 'website'
-              ? '🔗 '
-              : key === 'email'
-              ? '✉ '
-              : '';
-          const str = `${prefix}${value}`;
-          if (sx + ctx.measureText(str).width > tz.title.x + 900) break;
-          ctx.fillText(str, sx, sy);
-          sx += ctx.measureText(str).width + 24;
-        }
+      // Socials get their OWN dedicated zone — this is what previously
+      // collided with the builder ID / went off the edge of the card.
+      const hasSocials = Object.values(socials).some((v) => v && v.trim());
+      if (hasSocials) {
+        const socialsColor = tz.socials.color;
+        drawSocialsZone(ctx, socials, tz.socials, socialsColor);
       }
-    }
+
+      // Scannable QR, unique per builder (encodes their public profile URL).
+      await drawQrCode(ctx, profileUrl, frame.qrZone, {
+        dark: '#021a14',
+        light: '#ffffff',
+      });
+    };
+
+    render().catch(() => {
+      // QR generation failure shouldn't break the rest of the preview —
+      // the text layers above have already been drawn by this point.
+    });
   }, [
     frame,
     format,
@@ -194,6 +163,7 @@ export default function CardPreview({
     isPfp,
     isCircular,
     photoZone,
+    profileUrl,
   ]);
 
   const handleCardClick = () => {
@@ -201,11 +171,6 @@ export default function CardPreview({
       setIsFlipped(!isFlipped);
     }
   };
-
-  const profileUrl =
-    typeof window !== 'undefined'
-      ? `${window.location.origin}/builder/${builderId}`
-      : `https://hhgoa.com/builder/${builderId}`;
 
   return (
     <div className={styles.previewWrapper}>

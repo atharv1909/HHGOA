@@ -1,10 +1,6 @@
 // ═══════════════════════════════════════════════════════
 // HH GOA 2026 — SHARED CARD TEXT/SOCIALS RENDERER
-//
-// Single source of truth for drawing name/stack/title/id/timestamp
-// and the optional-socials row. Used by BOTH CardPreview.tsx (live
-// DOM/canvas preview) and canvasExporter.ts (final export), so the
-// two can never drift out of sync again.
+// Clean social handles with logos, single source of truth
 // ═══════════════════════════════════════════════════════
 
 import QRCode from 'qrcode';
@@ -18,7 +14,6 @@ const FONT_STACK = {
 /**
  * Draws a single text zone (name / stack / title / builderId / timestamp),
  * truncating with an ellipsis if it would overflow zone.maxWidth.
- * Optionally accepts a placeholder shown in a muted color when empty.
  */
 export function drawTextZone(
   ctx: CanvasRenderingContext2D,
@@ -46,7 +41,7 @@ export function drawTextZone(
   ctx.fillText(displayText, zone.x, zone.y);
 }
 
-/** Strips protocol/domain noise so pasted URLs render as short handles. */
+/** Strips protocol/domain noise so pasted full URLs render as clean handles. */
 export function formatSocialValue(key: string, raw: string): string {
   let v = raw.trim();
   v = v.replace(/^https?:\/\//i, '').replace(/^www\./i, '');
@@ -55,21 +50,30 @@ export function formatSocialValue(key: string, raw: string): string {
     v = v.replace(/^github\.com\//i, '');
   } else if (key === 'x') {
     v = v.replace(/^(x\.com|twitter\.com)\//i, '');
-    v = v.replace(/^@/, '');
+  } else if (key === 'linkedin') {
+    v = v.replace(/^linkedin\.com\/in\//i, '');
+  } else if (key === 'website') {
+    v = v.split('/')[0]; // clean domain only
   }
 
-  v = v.replace(/\/+$/, '');
-  return v;
+  v = v.replace(/^@/, '').replace(/\/+$/, '');
+
+  if (key === 'website' || key === 'email' || key === 'phone') {
+    return v;
+  }
+  return `@${v}`;
 }
 
 function socialPrefix(key: string): string {
   switch (key) {
     case 'x':
-      return '@';
+      return '𝕏 ';
     case 'github':
-      return 'gh/';
+      return '💻 ';
+    case 'linkedin':
+      return '💼 ';
     case 'website':
-      return '🔗 ';
+      return '🌐 ';
     case 'email':
       return '✉ ';
     default:
@@ -79,12 +83,6 @@ function socialPrefix(key: string): string {
 
 /**
  * Draws the optional-socials row inside its OWN dedicated zone.
- * - Respects zone.align (left/center/right) by measuring total row width first.
- * - Truncates any single overlong entry (e.g. a pasted full GitHub URL).
- * - Drops trailing entries (with an ellipsis) rather than letting the row
- *   run past zone.maxWidth into neighboring text.
- * Never reaches into another zone's coordinates — this is what caused the
- * builder-ID / socials overlap previously.
  */
 export function drawSocialsZone(
   ctx: CanvasRenderingContext2D,
@@ -102,7 +100,7 @@ export function drawSocialsZone(
   ctx.textBaseline = 'top';
 
   const gap = zone.fontSize * 1.1;
-  const maxEntryWidth = zone.maxWidth * 0.62;
+  const maxEntryWidth = zone.maxWidth * 0.45;
 
   const parts: string[] = entries.map(([key, value]) => {
     let t = `${socialPrefix(key)}${formatSocialValue(key, value)}`;
@@ -154,8 +152,6 @@ export function drawSocialsZone(
 
 /**
  * Draws a scannable QR code (encoding the public builder-profile URL)
- * directly onto the card canvas, at the given zone. Every builder gets
- * a unique code since it's derived from their unique builderId.
  */
 export async function drawQrCode(
   ctx: CanvasRenderingContext2D,
@@ -175,8 +171,6 @@ export async function drawQrCode(
     },
   });
 
-  // Small white/light quiet-zone card behind the code so it stays scannable
-  // even when sitting on a busy or dark background.
   const pad = Math.round(zone.size * 0.08);
   ctx.save();
   ctx.fillStyle = options?.light || '#ffffff';

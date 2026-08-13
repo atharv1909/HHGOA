@@ -25,7 +25,6 @@ export default function Home() {
     offsetY: 0,
   });
   const [selectedFilter, setSelectedFilter] = useState<PhotoFilterMode>('natural');
-  const [selectedFrameId, setSelectedFrameId] = useState<string>('goa-genesis');
   const [builderId] = useState<string>(() => generateBuilderId());
 
   const [formData, setFormData] = useState<BuilderData>({
@@ -89,7 +88,7 @@ export default function Home() {
 
     startTransition(async () => {
       try {
-        const frame = getFrame(selectedFrameId);
+        const frame = getFrame();
         const blob = await exportCard({
           image: image.bitmap,
           imageTransform: transform,
@@ -117,9 +116,8 @@ export default function Home() {
     setResultBlob(null);
   };
 
-  const frame = getFrame(selectedFrameId);
+  const frame = getFrame();
 
-  // Step Wizard click actions
   const handleWizardClick = (targetStep: Step) => {
     if (targetStep === 'upload') {
       setStep('upload');
@@ -142,10 +140,8 @@ export default function Home() {
 
   return (
     <div className={styles.pageWrapper}>
-      {/* Side Palm Trees & Sun Glow Vector Background */}
       <BeachBackground />
 
-      {/* Infinite Animated Marquee Ticker */}
       <div className="marqueeContainer" style={{ zIndex: 10, position: 'relative' }}>
         <div className="marqueeTrack">
           <div className="marqueeContent">
@@ -165,9 +161,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Header with Clickable Logo Buttons returning to Home */}
       <header className={styles.header} style={{ zIndex: 10, position: 'relative' }}>
-        {/* Top Left: 2:47 PM Studio Logo Button */}
         <button
           onClick={handleReset}
           className={styles.logoBtn}
@@ -181,7 +175,6 @@ export default function Home() {
           />
         </button>
 
-        {/* Top Right: Hacker House Goa Logo Button */}
         <button
           onClick={handleReset}
           className={styles.logoBtn}
@@ -196,7 +189,6 @@ export default function Home() {
         </button>
       </header>
 
-      {/* Interactive Step Wizard Progress Bar */}
       <nav className={styles.wizardBar} aria-label="Creation progress" style={{ zIndex: 10, position: 'relative' }}>
         <button
           className={`${styles.wizardStepBtn} ${
@@ -231,7 +223,6 @@ export default function Home() {
         </button>
       </nav>
 
-      {/* Hero Section */}
       <section className={styles.heroSection} style={{ zIndex: 10, position: 'relative' }}>
         <h1 className={styles.heroHeadline}>
           {step === 'result'
@@ -248,7 +239,6 @@ export default function Home() {
         </p>
       </section>
 
-      {/* Main Workspace */}
       <main className={styles.mainContainer} style={{ zIndex: 10, position: 'relative' }}>
         {step === 'upload' && (
           <UploadZone onImageReady={handleImageReady} />
@@ -271,8 +261,6 @@ export default function Home() {
             />
 
             <FrameSelector
-              selectedId={selectedFrameId}
-              onSelect={setSelectedFrameId}
               selectedFilter={selectedFilter}
               onSelectFilter={setSelectedFilter}
             />
@@ -303,7 +291,6 @@ export default function Home() {
         )}
       </main>
 
-      {/* Extended Showcase Section */}
       <section className={styles.showcaseSection} style={{ zIndex: 10, position: 'relative' }}>
         <div className={styles.showcaseCard}>
           <img
@@ -320,7 +307,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Bottom Marquee Ticker */}
       <div className="marqueeContainer" style={{ marginTop: 'auto', zIndex: 10, position: 'relative' }}>
         <div className="marqueeTrack">
           <div className="marqueeContent">
@@ -338,10 +324,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Official Interactive Footer Banner */}
       <footer className={styles.footerBannerContainer} style={{ zIndex: 10, position: 'relative' }}>
         <div className={styles.footerBannerInner}>
-          {/* Main Serif Title */}
           <img
             src="/brand/hacker-house-logo.png"
             alt="HACKER GOA HOUSE"
@@ -351,7 +335,6 @@ export default function Home() {
             GOA, INDIA · 28 – 31 OCT 2026 · 2:47 PM STUDIO
           </span>
 
-          {/* Interactive Clickable Links Grid */}
           <div className={styles.footerGrid}>
             <div className={styles.footerColumn}>
               <a

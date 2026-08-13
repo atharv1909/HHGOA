@@ -1,16 +1,15 @@
 // ═══════════════════════════════════════════════════════
 // HH GOA 2026 — CANVAS EXPORTER
 // Correct Layer Ordering:
-// 1. Background fill
-// 2. Frame Background Art (Sea, Palms, Sunset)
-// 3. User Photo (Clipped to photo zone + zoom/pan + filter)
-// 4. Frame Decorations & Text (Borders, stamps, title, ID)
+// 1. Background Fill & Template Image (card.png)
+// 2. User Photo (Clipped to photo zone + zoom/pan + filter)
+// 3. Text, QR Code, and Barcode Overlay
 // ═══════════════════════════════════════════════════════
 
 import { FrameConfig } from './frames';
 import { formatBuilderId } from './idGenerator';
 import { PhotoFilterMode, applyFilterToCanvas } from './imageProcessor';
-import { drawTextZone, drawSocialsZone, drawQrCode } from './cardRenderer';
+import { drawTextZone, drawSocialsZone, drawQrCode, drawBarcode } from './cardRenderer';
 
 export interface ExportData {
   image: ImageBitmap;
@@ -25,9 +24,9 @@ export interface ExportData {
   socials?: Record<string, string>;
 }
 
-const BUILDER_ID_WIDTH = 1080;
-const BUILDER_ID_HEIGHT = 1350; // 4:5
-const PFP_SIZE = 1080; // 1:1
+const BUILDER_ID_WIDTH = 1748;
+const BUILDER_ID_HEIGHT = 1240;
+const PFP_SIZE = 1080;
 
 async function ensureFontsLoaded(): Promise<void> {
   if (typeof document === 'undefined') return;
@@ -50,29 +49,20 @@ export async function exportCard(data: ExportData): Promise<Blob> {
   canvas.height = height;
   const ctx = canvas.getContext('2d')!;
 
-  // 1. Background Fill
+  // 1. Background Fill & Base Template Image
   ctx.fillStyle = data.frame.bgColor;
   ctx.fillRect(0, 0, width, height);
 
-  // 2. Background Artwork (Sea, Sunset, Palm Tree Silhouettes) - drawn BEFORE photo!
   if (!isPfp && data.frame.renderBackground) {
     data.frame.renderBackground(ctx, width, height);
   }
 
-  // 3. User Photo — clipped to photo zone, with transform & filter
+  // 2. User Photo — clipped to photo zone window
   const photoZone = isPfp ? data.frame.pfpPhotoZone : data.frame.photoZone;
 
   ctx.save();
   ctx.beginPath();
-
-  if (data.frame.id === 'goa-genesis' && !isPfp) {
-    const cx = photoZone.x + photoZone.width / 2;
-    const cy = photoZone.y + photoZone.height / 2;
-    const radius = photoZone.width / 2;
-    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-  } else {
-    ctx.rect(photoZone.x, photoZone.y, photoZone.width, photoZone.height);
-  }
+  ctx.rect(photoZone.x, photoZone.y, photoZone.width, photoZone.height);
   ctx.clip();
 
   const img = data.image;
@@ -100,19 +90,22 @@ export async function exportCard(data: ExportData): Promise<Blob> {
   }
   ctx.restore();
 
-  // 4. Frame Decorations & Text — drawn AFTER photo
+  // 3. Decorations (if any)
   if (isPfp) {
     data.frame.renderPfpDecorations(ctx, width, height);
   } else {
     data.frame.renderDecorations(ctx, width, height);
   }
 
-  // 5. Text (Builder ID format)
+  // 4. Text & Scannables Overlay
   if (!isPfp) {
     const tz = data.frame.textZones;
-    drawTextZone(ctx, data.name, tz.name);
-    drawTextZone(ctx, data.stack, tz.stack);
-    drawTextZone(ctx, data.title, tz.title);
+    drawTextZone(ctx, data.name, tz.name, { placeholder: 'YOUR NAME', clearBg: true });
+    drawTextZone(ctx, data.stack ? `STACK / ROLE: ${data.stack.toUpperCase()}` : '', tz.stack, {
+      placeholder: 'STACK / ROLE: RUST >& BACKEND',
+      clearBg: true,
+    });
+    drawTextZone(ctx, data.title, tz.title, { placeholder: 'BUILDER CLASS' });
     drawTextZone(ctx, formatBuilderId(data.builderId), tz.builderId);
 
     const now = new Date();
@@ -120,20 +113,23 @@ export async function exportCard(data: ExportData): Promise<Blob> {
     const timestamp = `${months[now.getMonth()]} ${now.getFullYear()}`;
     drawTextZone(ctx, timestamp, tz.timestamp);
 
-    // Socials get their OWN zone — never inherits builderId/timestamp's spot.
     if (data.socials) {
-      const socialsColor = tz.socials.color;
-      drawSocialsZone(ctx, data.socials, tz.socials, socialsColor);
+      drawSocialsZone(ctx, data.socials, tz.socials, tz.socials.color);
     }
 
-    // 6. Scannable QR — unique per builder, encodes their public profile URL.
+    // 5. Scannable QR & Barcode
     const profileUrl =
       typeof window !== 'undefined'
         ? `${window.location.origin}/builder/${data.builderId}`
         : `https://hhgoa.com/builder/${data.builderId}`;
+
     await drawQrCode(ctx, profileUrl, data.frame.qrZone, {
-      dark: data.frame.paletteMode === 'dark' ? '#021a14' : '#021a14',
+      dark: '#021a14',
       light: '#ffffff',
+    });
+
+    drawBarcode(ctx, formatBuilderId(data.builderId), data.frame.barcodeZone, {
+      bar: '#021a14',
     });
   }
 

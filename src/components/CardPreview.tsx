@@ -7,7 +7,7 @@ import { ProcessedImage, PhotoFilterMode, applyFilterToCanvas } from '@/lib/imag
 import { ImageTransform } from './PhotoEditor';
 import PhotoEditor from './PhotoEditor';
 import { formatBuilderId } from '@/lib/idGenerator';
-import { drawTextZone, drawSocialsZone, drawQrCode } from '@/lib/cardRenderer';
+import { drawTextZone, drawSocialsZone, drawQrCode, drawBarcode } from '@/lib/cardRenderer';
 import styles from '@/styles/components/CardPreview.module.css';
 
 interface CardPreviewProps {
@@ -46,23 +46,21 @@ export default function CardPreview({
   const isPfp = format === 'pfp';
   const photoZone = isPfp ? frame.pfpPhotoZone : frame.photoZone;
 
-  const baseW = 1080;
-  const baseH = isPfp ? 1080 : 1350;
-
-  const isCircular = frame.id === 'goa-genesis' && !isPfp;
-
-  const profileUrl =
-    typeof window !== 'undefined'
-      ? `${window.location.origin}/builder/${builderId}`
-      : `https://hhgoa.com/builder/${builderId}`;
+  const baseW = 1748;
+  const baseH = isPfp ? 1080 : 1240;
 
   const photoStyle = {
     left: `${(photoZone.x / baseW) * 100}%`,
     top: `${(photoZone.y / baseH) * 100}%`,
     width: `${(photoZone.width / baseW) * 100}%`,
     height: `${(photoZone.height / baseH) * 100}%`,
-    borderRadius: isCircular ? '50%' : '0px',
+    borderRadius: '0px',
   };
+
+  const profileUrl =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}/builder/${builderId}`
+      : `https://hhgoa.com/builder/${builderId}`;
 
   // Render Background Artwork canvas
   useEffect(() => {
@@ -96,19 +94,12 @@ export default function CardPreview({
       if (filter !== 'natural') {
         ctx.save();
         ctx.beginPath();
-        if (isCircular) {
-          const cx = photoZone.x + photoZone.width / 2;
-          const cy = photoZone.y + photoZone.height / 2;
-          ctx.arc(cx, cy, photoZone.width / 2, 0, Math.PI * 2);
-        } else {
-          ctx.rect(photoZone.x, photoZone.y, photoZone.width, photoZone.height);
-        }
+        ctx.rect(photoZone.x, photoZone.y, photoZone.width, photoZone.height);
         ctx.clip();
         applyFilterToCanvas(ctx, baseW, baseH, filter);
         ctx.restore();
       }
 
-      // Frame decorations (borders, titles, stamps)
       if (isPfp) {
         frame.renderPfpDecorations(ctx, baseW, baseH);
         return;
@@ -118,9 +109,12 @@ export default function CardPreview({
 
       const tz = frame.textZones;
 
-      drawTextZone(ctx, name, tz.name, { placeholder: 'YOUR NAME' });
-      drawTextZone(ctx, stack, tz.stack, { placeholder: 'STACK / ROLE' });
-      drawTextZone(ctx, title, tz.title, { placeholder: 'BUILDER TITLE' });
+      drawTextZone(ctx, name, tz.name, { placeholder: 'YOUR NAME', clearBg: true });
+      drawTextZone(ctx, stack ? `STACK / ROLE: ${stack.toUpperCase()}` : '', tz.stack, {
+        placeholder: 'STACK / ROLE: RUST >& BACKEND',
+        clearBg: true,
+      });
+      drawTextZone(ctx, title, tz.title, { placeholder: 'BUILDER CLASS' });
       drawTextZone(ctx, formatBuilderId(builderId), tz.builderId);
 
       const now = new Date();
@@ -130,25 +124,22 @@ export default function CardPreview({
       ];
       drawTextZone(ctx, `${months[now.getMonth()]} ${now.getFullYear()}`, tz.timestamp);
 
-      // Socials get their OWN dedicated zone — this is what previously
-      // collided with the builder ID / went off the edge of the card.
       const hasSocials = Object.values(socials).some((v) => v && v.trim());
       if (hasSocials) {
-        const socialsColor = tz.socials.color;
-        drawSocialsZone(ctx, socials, tz.socials, socialsColor);
+        drawSocialsZone(ctx, socials, tz.socials, tz.socials.color);
       }
 
-      // Scannable QR, unique per builder (encodes their public profile URL).
       await drawQrCode(ctx, profileUrl, frame.qrZone, {
         dark: '#021a14',
         light: '#ffffff',
       });
+
+      drawBarcode(ctx, formatBuilderId(builderId), frame.barcodeZone, {
+        bar: '#021a14',
+      });
     };
 
-    render().catch(() => {
-      // QR generation failure shouldn't break the rest of the preview —
-      // the text layers above have already been drawn by this point.
-    });
+    render().catch(() => {});
   }, [
     frame,
     format,
@@ -161,7 +152,6 @@ export default function CardPreview({
     baseW,
     baseH,
     isPfp,
-    isCircular,
     photoZone,
     profileUrl,
   ]);

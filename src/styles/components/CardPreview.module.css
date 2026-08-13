@@ -1,6 +1,6 @@
 .previewWrapper {
   width: 100%;
-  max-width: 440px;
+  max-width: 580px;
   margin: 0 auto;
   perspective: 1200px;
 }
@@ -28,7 +28,7 @@
 }
 
 .aspectBuilderId {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1748 / 1240;
 }
 
 .aspectPfp {

@@ -31,11 +31,11 @@ export function drawTextZone(
     ctx.fillStyle = GREEN_DARK;
 
     if (zone.fontSize > 40) {
-      // Covers "Your Name" on card.png
-      ctx.fillRect(350, 645, 1040, 75);
+      // Covers "Your Name" on card.png (y = 765 to 860)
+      ctx.fillRect(350, 765, 1040, 95);
     } else if (zone.fontSize > 20 && zone.fontSize <= 40) {
-      // Covers "STACK / ROLE: RUST >& BACKEND" on card.png
-      ctx.fillRect(350, 730, 1040, 45);
+      // Covers "STACK / ROLE: RUST >& BACKEND" on card.png (y = 870 to 935)
+      ctx.fillRect(350, 870, 1040, 65);
     }
   }
 

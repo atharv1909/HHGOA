@@ -127,22 +127,22 @@ export const FRAMES: Record<string, FrameConfig> = {
     bgColor: GREEN_DARK,
 
     // Inner pink window inside scalloped photo frame
-    photoZone: { x: 645, y: 240, width: 460, height: 430 },
+    photoZone: { x: 645, y: 240, width: 460, height: 500 },
     pfpPhotoZone: { x: 190, y: 190, width: 700, height: 700 },
 
     // Yellow ID box bounds
-    idBoxZone: { x: 467, y: 770, width: 814, height: 140 },
+    idBoxZone: { x: 467, y: 955, width: 814, height: 150 },
 
     // QR Code — left white plate inside yellow box
-    qrZone: { x: 490, y: 780, size: 125 },
+    qrZone: { x: 490, y: 965, size: 130 },
 
     // Horizontal Barcode — bottom right inside yellow box
-    barcodeZone: { x: 650, y: 835, width: 600, height: 65 },
+    barcodeZone: { x: 650, y: 1030, width: 600, height: 65 },
 
     textZones: {
       name: {
         x: 874,
-        y: 645,
+        y: 812,
         maxWidth: 1000,
         fontSize: 54,
         fontFamily: 'display',
@@ -152,7 +152,7 @@ export const FRAMES: Record<string, FrameConfig> = {
       },
       stack: {
         x: 874,
-        y: 730,
+        y: 902,
         maxWidth: 1000,
         fontSize: 26,
         fontFamily: 'mono',
@@ -162,7 +162,7 @@ export const FRAMES: Record<string, FrameConfig> = {
       },
       builderId: {
         x: 650,
-        y: 782,
+        y: 968,
         maxWidth: 600,
         fontSize: 44,
         fontFamily: 'mono',
@@ -172,7 +172,7 @@ export const FRAMES: Record<string, FrameConfig> = {
       },
       title: {
         x: 874,
-        y: 760,
+        y: 900,
         maxWidth: 900,
         fontSize: 24,
         fontFamily: 'sans',

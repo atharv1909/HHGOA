@@ -21,49 +21,44 @@
   display: block;
 }
 
-/* Clickable Social Icons Row */
+/* Clickable Large Pink Social Icon Badges */
 .socialsRow {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
+  align-items: center;
+  gap: 14px;
   width: 100%;
   max-width: 440px;
+  padding: 8px 0;
 }
 
-.socialIconBtn {
+.pinkSocialIconBtn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  background: var(--surface-dark-elevated);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-pill);
-  color: var(--hh-yellow);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 700;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 0, 122, 0.12);
+  border: 2px solid var(--hh-pink);
+  border-radius: 50%;
+  color: var(--hh-pink);
   text-decoration: none;
-  transition: all 150ms ease;
-}
-
-.socialIconBtn:hover {
-  background: var(--hh-pink);
-  border-color: var(--hh-pink);
-  color: #ffffff;
-  transform: translateY(-2px);
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: var(--glow-pink);
 }
 
-.socialIconSymbol {
-  font-size: 15px;
+.pinkSocialIconBtn:hover {
+  background: var(--hh-pink);
+  color: #ffffff;
+  transform: scale(1.12) translateY(-2px);
+  box-shadow: 0 0 20px rgba(255, 0, 122, 0.6);
 }
 
-.socialIconText {
-  max-width: 140px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.pinkIconSymbol {
+  font-size: 24px;
+  line-height: 1;
+  display: block;
 }
 
 /* Actions Group */

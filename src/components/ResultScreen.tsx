@@ -89,7 +89,7 @@ export default function ResultScreen({
         )}
       </div>
 
-      {/* Clickable Social Links Row */}
+      {/* Pink Social Icon Buttons (Icons only with increased font size) */}
       {activeSocialKeys.length > 0 && (
         <div className={styles.socialsRow} aria-label="Builder social links">
           {activeSocialKeys.map((key) => {
@@ -101,11 +101,11 @@ export default function ResultScreen({
                 href={url}
                 target="_blank"
                 rel="noreferrer"
-                className={styles.socialIconBtn}
+                className={styles.pinkSocialIconBtn}
                 title={`${meta.label}: ${socials[key]}`}
+                aria-label={meta.label}
               >
-                <span className={styles.socialIconSymbol}>{meta.icon}</span>
-                <span className={styles.socialIconText}>{socials[key]}</span>
+                <span className={styles.pinkIconSymbol}>{meta.icon}</span>
               </a>
             );
           })}

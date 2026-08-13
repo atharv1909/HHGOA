@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════
 // HH GOA 2026 — CARD ENGINE
-// Single dedicated Builder ID card design based directly on the
-// card.png reference template image.
+// Dedicated Builder ID card design based directly on the
+// card.png reference image template.
 // ═══════════════════════════════════════════════════════
 
 export interface TextZone {
@@ -48,14 +48,29 @@ export interface FrameConfig {
 
 const imageCache: Record<string, HTMLImageElement> = {};
 
-function getFrameImage(path: string): HTMLImageElement | null {
-  if (typeof window === 'undefined') return null;
-  if (!imageCache[path]) {
+export function loadCardImage(): Promise<HTMLImageElement> {
+  return new Promise((resolve) => {
+    if (typeof window === 'undefined') return;
+    const path = '/card.png';
+    if (imageCache[path] && imageCache[path].complete && imageCache[path].naturalWidth > 0) {
+      resolve(imageCache[path]);
+      return;
+    }
     const img = new Image();
+    img.onload = () => {
+      imageCache[path] = img;
+      resolve(img);
+    };
+    img.onerror = () => {
+      const fallback = new Image();
+      fallback.onload = () => {
+        imageCache['/brand/card.png'] = fallback;
+        resolve(fallback);
+      };
+      fallback.src = '/brand/card.png';
+    };
     img.src = path;
-    imageCache[path] = img;
-  }
-  return imageCache[path];
+  });
 }
 
 const GREEN_DARK = '#012119';
@@ -69,38 +84,37 @@ const HACKERHOUSE_GOA: FrameConfig = {
   paletteMode: 'dark',
   bgColor: GREEN_DARK,
 
-  // Inner square photo window matching card.png pink UPLOAD PHOTO area
-  photoZone: { x: 637, y: 350, width: 500, height: 372 },
+  // Inner pink square window inside the scalloped border on card.png
+  photoZone: { x: 635, y: 278, width: 398, height: 398 },
 
-  // Yellow ID Box
-  idBoxZone: { x: 467, y: 955, width: 814, height: 180 },
-  qrZone: { x: 490, y: 965, size: 150 },
-  barcodeZone: { x: 670, y: 1045, width: 590, height: 75 },
+  // Yellow ID Box: x=467, y=800, width=814, height=150
+  idBoxZone: { x: 467, y: 800, width: 814, height: 150 },
+  qrZone: { x: 488, y: 812, size: 125 },
+  barcodeZone: { x: 640, y: 868, width: 600, height: 65 },
 
   textZones: {
-    name: { x: 874, y: 790, maxWidth: 900, fontSize: 64, fontFamily: 'display', color: CREAM, align: 'center', weight: '900' },
-    stack: { x: 874, y: 896, maxWidth: 900, fontSize: 28, fontFamily: 'mono', color: WHITE, align: 'center', weight: '800' },
-    title: { x: 1546, y: 1060, maxWidth: 220, fontSize: 24, fontFamily: 'mono', color: GREEN_DARK, align: 'center', weight: '900' },
-    builderId: { x: 670, y: 970, maxWidth: 600, fontSize: 48, fontFamily: 'mono', color: GREEN_DARK, align: 'left', weight: '900' },
-    timestamp: { x: 874, y: 1220, maxWidth: 500, fontSize: 14, fontFamily: 'mono', color: 'rgba(251,230,162,0.55)', align: 'center' },
-    socials: { x: 874, y: 1180, maxWidth: 900, fontSize: 20, fontFamily: 'mono', color: CREAM, align: 'center', weight: '700' },
+    name: { x: 834, y: 650, maxWidth: 900, fontSize: 58, fontFamily: 'display', color: CREAM, align: 'center', weight: '900' },
+    stack: { x: 834, y: 745, maxWidth: 900, fontSize: 26, fontFamily: 'mono', color: WHITE, align: 'center', weight: '800' },
+    title: { x: 1546, y: 910, maxWidth: 220, fontSize: 22, fontFamily: 'mono', color: GREEN_DARK, align: 'center', weight: '900' },
+    builderId: { x: 640, y: 812, maxWidth: 600, fontSize: 44, fontFamily: 'mono', color: GREEN_DARK, align: 'left', weight: '900' },
+    timestamp: { x: 834, y: 1180, maxWidth: 500, fontSize: 14, fontFamily: 'mono', color: 'rgba(251,230,162,0.55)', align: 'center' },
+    socials: { x: 834, y: 1150, maxWidth: 900, fontSize: 18, fontFamily: 'mono', color: CREAM, align: 'center', weight: '700' },
   },
 
   renderBackground: (ctx, w, h) => {
-    const artImg = getFrameImage('/card.png') || getFrameImage('/brand/card.png');
-    if (artImg && artImg.complete && artImg.naturalWidth > 0) {
-      ctx.drawImage(artImg, 0, 0, w, h);
-    } else {
+    loadCardImage().then((img) => {
+      if (img && img.complete && img.naturalWidth > 0) {
+        ctx.drawImage(img, 0, 0, w, h);
+      }
+    }).catch(() => {
       ctx.fillStyle = GREEN_DARK;
       ctx.fillRect(0, 0, w, h);
-    }
+    });
   },
 
-  renderDecorations: () => {
-    // Background card.png contains all artwork. No procedural fake coconuts or flowers!
-  },
+  renderDecorations: () => {},
 
-  pfpPhotoZone: { x: 637, y: 350, width: 500, height: 372 },
+  pfpPhotoZone: { x: 635, y: 278, width: 398, height: 398 },
   renderPfpDecorations: () => {},
 };
 

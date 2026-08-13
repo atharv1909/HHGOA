@@ -24,31 +24,30 @@ export function drawTextZone(
   options?: { placeholder?: string; placeholderColor?: string; clearBg?: boolean }
 ) {
   const hasValue = !!text && text.trim().length > 0;
-  const val = hasValue ? text : options?.placeholder || '';
-  if (!val) return;
+  if (!hasValue) return;
 
-  // Clear template placeholder text from base image if clearBg option set
-  if (options?.clearBg) {
+  // Clear baseline placeholder text on card.png only when real custom value is present
+  if (options?.clearBg && hasValue) {
     ctx.save();
     ctx.fillStyle = GREEN_DARK;
     const padX = zone.maxWidth / 2;
-    const h = zone.fontSize * 1.4;
-    ctx.fillRect(zone.x - padX, zone.y, zone.maxWidth, h);
+    const h = zone.fontSize * 1.5;
+    ctx.fillRect(zone.x - padX, zone.y - 5, zone.maxWidth, h);
     ctx.restore();
   }
 
   const family = FONT_STACK[zone.fontFamily];
   const weight = zone.weight || '700';
   ctx.font = `${weight} ${zone.fontSize}px ${family}`;
-  ctx.fillStyle = hasValue ? zone.color : options?.placeholderColor || 'rgba(251,230,162,0.4)';
+  ctx.fillStyle = zone.color;
   ctx.textAlign = zone.align || 'left';
   ctx.textBaseline = 'top';
 
-  let displayText = val;
+  let displayText = text;
   while (ctx.measureText(displayText).width > zone.maxWidth && displayText.length > 1) {
     displayText = displayText.slice(0, -1);
   }
-  if (displayText !== val) displayText += '…';
+  if (displayText !== text) displayText += '…';
 
   ctx.fillText(displayText, zone.x, zone.y);
 }

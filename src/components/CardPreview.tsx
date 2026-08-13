@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import { FrameConfig } from '@/lib/frames';
+import { FrameConfig, loadCardImage } from '@/lib/frames';
 import { ProcessedImage, PhotoFilterMode, applyFilterToCanvas } from '@/lib/imageProcessor';
 import { ImageTransform } from './PhotoEditor';
 import PhotoEditor from './PhotoEditor';
@@ -62,7 +62,7 @@ export default function CardPreview({
       ? `${window.location.origin}/builder/${builderId}`
       : `https://hhgoa.com/builder/${builderId}`;
 
-  // Render Background Artwork canvas
+  // Render Background Artwork canvas reliably
   useEffect(() => {
     const bgCanvas = bgCanvasRef.current;
     if (!bgCanvas) return;
@@ -71,10 +71,21 @@ export default function CardPreview({
     const ctx = bgCanvas.getContext('2d');
     if (!ctx) return;
 
-    ctx.clearRect(0, 0, baseW, baseH);
-    if (!isPfp && frame.renderBackground) {
-      frame.renderBackground(ctx, baseW, baseH);
-    }
+    let active = true;
+
+    loadCardImage().then((artImg) => {
+      if (!active) return;
+      ctx.clearRect(0, 0, baseW, baseH);
+      ctx.drawImage(artImg, 0, 0, baseW, baseH);
+    }).catch(() => {
+      if (!active) return;
+      ctx.fillStyle = frame.bgColor;
+      ctx.fillRect(0, 0, baseW, baseH);
+    });
+
+    return () => {
+      active = false;
+    };
   }, [frame, isPfp, baseW, baseH]);
 
   // Render Foreground Overlay & Text canvas
@@ -109,12 +120,11 @@ export default function CardPreview({
 
       const tz = frame.textZones;
 
-      drawTextZone(ctx, name, tz.name, { placeholder: 'YOUR NAME', clearBg: true });
+      drawTextZone(ctx, name, tz.name, { clearBg: true });
       drawTextZone(ctx, stack ? `STACK / ROLE: ${stack.toUpperCase()}` : '', tz.stack, {
-        placeholder: 'STACK / ROLE: RUST >& BACKEND',
         clearBg: true,
       });
-      drawTextZone(ctx, title, tz.title, { placeholder: 'BUILDER CLASS' });
+      drawTextZone(ctx, title, tz.title);
       drawTextZone(ctx, formatBuilderId(builderId), tz.builderId);
 
       const now = new Date();

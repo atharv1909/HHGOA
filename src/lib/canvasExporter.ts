@@ -6,7 +6,7 @@
 // 3. Text, QR Code, and Barcode Overlay
 // ═══════════════════════════════════════════════════════
 
-import { FrameConfig } from './frames';
+import { FrameConfig, loadCardImage } from './frames';
 import { formatBuilderId } from './idGenerator';
 import { PhotoFilterMode, applyFilterToCanvas } from './imageProcessor';
 import { drawTextZone, drawSocialsZone, drawQrCode, drawBarcode } from './cardRenderer';
@@ -53,11 +53,14 @@ export async function exportCard(data: ExportData): Promise<Blob> {
   ctx.fillStyle = data.frame.bgColor;
   ctx.fillRect(0, 0, width, height);
 
-  if (!isPfp && data.frame.renderBackground) {
-    data.frame.renderBackground(ctx, width, height);
+  if (!isPfp) {
+    const artImg = await loadCardImage();
+    if (artImg && artImg.complete && artImg.naturalWidth > 0) {
+      ctx.drawImage(artImg, 0, 0, width, height);
+    }
   }
 
-  // 2. User Photo — clipped to photo zone window
+  // 2. User Photo — clipped to inner pink window
   const photoZone = isPfp ? data.frame.pfpPhotoZone : data.frame.photoZone;
 
   ctx.save();
@@ -90,22 +93,14 @@ export async function exportCard(data: ExportData): Promise<Blob> {
   }
   ctx.restore();
 
-  // 3. Decorations (if any)
-  if (isPfp) {
-    data.frame.renderPfpDecorations(ctx, width, height);
-  } else {
-    data.frame.renderDecorations(ctx, width, height);
-  }
-
-  // 4. Text & Scannables Overlay
+  // 3. Text & Scannables Overlay
   if (!isPfp) {
     const tz = data.frame.textZones;
-    drawTextZone(ctx, data.name, tz.name, { placeholder: 'YOUR NAME', clearBg: true });
+    drawTextZone(ctx, data.name, tz.name, { clearBg: true });
     drawTextZone(ctx, data.stack ? `STACK / ROLE: ${data.stack.toUpperCase()}` : '', tz.stack, {
-      placeholder: 'STACK / ROLE: RUST >& BACKEND',
       clearBg: true,
     });
-    drawTextZone(ctx, data.title, tz.title, { placeholder: 'BUILDER CLASS' });
+    drawTextZone(ctx, data.title, tz.title);
     drawTextZone(ctx, formatBuilderId(data.builderId), tz.builderId);
 
     const now = new Date();
@@ -117,7 +112,6 @@ export async function exportCard(data: ExportData): Promise<Blob> {
       drawSocialsZone(ctx, data.socials, tz.socials, tz.socials.color);
     }
 
-    // 5. Scannable QR & Barcode
     const profileUrl =
       typeof window !== 'undefined'
         ? `${window.location.origin}/builder/${data.builderId}`

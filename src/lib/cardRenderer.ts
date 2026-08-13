@@ -1,240 +1,160 @@
 // ═══════════════════════════════════════════════════════
-// HH GOA 2026 — SHARED CARD TEXT/SOCIALS/BARCODE RENDERER
-// Clean social handles with logos, barcodes, single source of truth
+// HH GOA 2026 — CARD CANVAS RENDER ENGINE
+// High resolution canvas text, QR code, and Barcode drawer
 // ═══════════════════════════════════════════════════════
 
 import QRCode from 'qrcode';
-import { TextZone } from './frames';
+import { TextZoneConfig, SocialsZoneConfig, QrZoneConfig, ZoneBounds } from './frames';
 
-const FONT_STACK = {
-  mono: '"JetBrains Mono", monospace',
-  display: '"Space Grotesk", sans-serif',
-};
+export interface RenderTextOptions {
+  clearBg?: boolean;
+}
 
 const GREEN_DARK = '#012119';
 
 /**
- * Draws a single text zone (name / stack / title / builderId / timestamp),
- * truncating with an ellipsis if it would overflow zone.maxWidth.
+ * Draws text onto canvas with explicit cover-up rect over baseline template text.
  */
 export function drawTextZone(
   ctx: CanvasRenderingContext2D,
   text: string,
-  zone: TextZone,
-  options?: { placeholder?: string; placeholderColor?: string; clearBg?: boolean }
-) {
-  const hasValue = !!text && text.trim().length > 0;
-  if (!hasValue) return;
+  zone: TextZoneConfig,
+  options: RenderTextOptions = {}
+): void {
+  const hasCustomText = !!text && text.trim().length > 0;
+  const displayText = hasCustomText ? text.trim() : '';
 
-  // Clear baseline placeholder text on card.png only when real custom value is present
-  if (options?.clearBg && hasValue) {
-    ctx.save();
+  ctx.save();
+
+  // Draw solid dark green box to cover template placeholders ("Your Name", "STACK/ROLE")
+  if (options.clearBg) {
     ctx.fillStyle = GREEN_DARK;
-    const padX = zone.maxWidth / 2;
-    const h = zone.fontSize * 1.5;
-    ctx.fillRect(zone.x - padX, zone.y - 5, zone.maxWidth, h);
+
+    if (zone.fontSize > 40) {
+      // Covers "Your Name" on card.png
+      ctx.fillRect(350, 645, 1040, 75);
+    } else if (zone.fontSize > 20 && zone.fontSize <= 40) {
+      // Covers "STACK / ROLE: RUST >& BACKEND" on card.png
+      ctx.fillRect(350, 730, 1040, 45);
+    }
+  }
+
+  if (!displayText) {
     ctx.restore();
+    return;
   }
 
-  const family = FONT_STACK[zone.fontFamily];
+  const fontFamily =
+    zone.fontFamily === 'display'
+      ? "'Outfit', 'Plus Jakarta Sans', sans-serif"
+      : zone.fontFamily === 'mono'
+      ? "'JetBrains Mono', 'Fira Code', monospace"
+      : "'Inter', sans-serif";
+
   const weight = zone.weight || '700';
-  ctx.font = `${weight} ${zone.fontSize}px ${family}`;
+  ctx.font = `${weight} ${zone.fontSize}px ${fontFamily}`;
   ctx.fillStyle = zone.color;
-  ctx.textAlign = zone.align || 'left';
-  ctx.textBaseline = 'top';
+  ctx.textAlign = zone.align;
+  ctx.textBaseline = 'middle';
 
-  let displayText = text;
-  while (ctx.measureText(displayText).width > zone.maxWidth && displayText.length > 1) {
-    displayText = displayText.slice(0, -1);
-  }
-  if (displayText !== text) displayText += '…';
+  ctx.fillText(displayText, zone.x, zone.y, zone.maxWidth);
 
-  ctx.fillText(displayText, zone.x, zone.y);
+  ctx.restore();
 }
 
-/** Strips protocol/domain noise so pasted full URLs render as clean handles. */
-export function formatSocialValue(key: string, raw: string): string {
-  let v = raw.trim();
-  v = v.replace(/^https?:\/\//i, '').replace(/^www\./i, '');
-
-  if (key === 'github') {
-    v = v.replace(/^github\.com\//i, '');
-  } else if (key === 'x') {
-    v = v.replace(/^(x\.com|twitter\.com)\//i, '');
-  } else if (key === 'linkedin') {
-    v = v.replace(/^linkedin\.com\/in\//i, '');
-  } else if (key === 'website') {
-    v = v.split('/')[0];
-  }
-
-  v = v.replace(/^@/, '').replace(/\/+$/, '');
-
-  if (key === 'website' || key === 'email' || key === 'phone') {
-    return v;
-  }
-  return `@${v}`;
-}
-
-function socialPrefix(key: string): string {
-  switch (key) {
-    case 'x':
-      return '𝕏 ';
-    case 'github':
-      return '💻 ';
-    case 'linkedin':
-      return '💼 ';
-    case 'website':
-      return '🌐 ';
-    case 'email':
-      return '✉ ';
-    default:
-      return '';
-  }
-}
-
-/**
- * Draws the optional-socials row inside its OWN dedicated zone.
- */
 export function drawSocialsZone(
   ctx: CanvasRenderingContext2D,
   socials: Record<string, string>,
-  zone: TextZone,
+  zone: SocialsZoneConfig,
   color: string
-) {
-  const entries = Object.entries(socials).filter(([, v]) => v && v.trim());
-  if (entries.length === 0) return;
+): void {
+  const handles = Object.entries(socials)
+    .filter(([_, value]) => value && value.trim())
+    .map(([key, value]) => `${key.toUpperCase()}: ${value.trim()}`);
 
-  const family = FONT_STACK[zone.fontFamily];
-  const weight = zone.weight || '700';
-  ctx.font = `${weight} ${zone.fontSize}px ${family}`;
-  ctx.fillStyle = color;
-  ctx.textBaseline = 'top';
+  if (handles.length === 0) return;
 
-  const gap = zone.fontSize * 1.1;
-  const maxEntryWidth = zone.maxWidth * 0.45;
-
-  const parts: string[] = entries.map(([key, value]) => {
-    let t = `${socialPrefix(key)}${formatSocialValue(key, value)}`;
-    while (ctx.measureText(t).width > maxEntryWidth && t.length > 1) {
-      t = t.slice(0, -1);
-    }
-    if (ctx.measureText(t).width < ctx.measureText(`${socialPrefix(key)}${formatSocialValue(key, value)}`).width) {
-      t += '…';
-    }
-    return t;
-  });
-
-  const fitted: string[] = [];
-  let widthUsed = 0;
-  for (const part of parts) {
-    const addGap = fitted.length > 0 ? gap : 0;
-    const w = ctx.measureText(part).width;
-    if (widthUsed + addGap + w > zone.maxWidth) {
-      if (fitted.length === 0) {
-        let t = part;
-        while (ctx.measureText(`${t}…`).width > zone.maxWidth && t.length > 1) {
-          t = t.slice(0, -1);
-        }
-        fitted.push(`${t}…`);
-      }
-      break;
-    }
-    fitted.push(part);
-    widthUsed += addGap + w;
-  }
-
-  const totalWidth = fitted.reduce(
-    (sum, p, i) => sum + ctx.measureText(p).width + (i > 0 ? gap : 0),
-    0
-  );
-
-  let startX = zone.x;
-  if (zone.align === 'center') startX = zone.x - totalWidth / 2;
-  else if (zone.align === 'right') startX = zone.x - totalWidth;
-
-  ctx.textAlign = 'left';
-  let x = startX;
-  for (const part of fitted) {
-    ctx.fillText(part, x, zone.y);
-    x += ctx.measureText(part).width + gap;
-  }
-}
-
-/**
- * Draws a horizontal decorative barcode derived deterministically from the builder ID.
- */
-export function drawBarcode(
-  ctx: CanvasRenderingContext2D,
-  code: string,
-  zone: { x: number; y: number; width: number; height: number },
-  options?: { bar?: string; caption?: boolean; captionColor?: string }
-) {
-  const barColor = options?.bar || '#021a14';
-  const showCaption = options?.caption !== false;
-
-  let seed = 0;
-  for (let i = 0; i < code.length; i++) seed = (seed * 31 + code.charCodeAt(i)) >>> 0;
-  if (seed === 0) seed = 42;
-  const rand = () => {
-    seed = (seed * 1664525 + 1013904223) >>> 0;
-    return seed / 0xffffffff;
-  };
-
-  const captionHeight = showCaption ? Math.round(zone.height * 0.28) : 0;
-  const barsHeight = zone.height - captionHeight;
+  const text = handles.join('  •  ');
 
   ctx.save();
-  ctx.fillStyle = barColor;
-  let x = zone.x;
-  const endX = zone.x + zone.width;
-  while (x < endX - 2) {
-    const w = 2 + Math.floor(rand() * 4);
-    const gap = 2 + Math.floor(rand() * 3);
-    const actualW = Math.min(w, endX - x);
-    ctx.fillRect(x, zone.y, actualW, barsHeight);
-    x += w + gap;
-  }
+  ctx.font = `600 ${zone.fontSize}px 'JetBrains Mono', monospace`;
+  ctx.fillStyle = color;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, zone.x, zone.y, zone.maxWidth);
   ctx.restore();
-
-  if (showCaption) {
-    ctx.save();
-    ctx.font = `700 ${Math.round(captionHeight * 0.8)}px "JetBrains Mono", monospace`;
-    ctx.fillStyle = options?.captionColor || barColor;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
-    ctx.fillText(code, zone.x + zone.width / 2, zone.y + barsHeight + 2, zone.width);
-    ctx.restore();
-  }
 }
 
 /**
- * Draws a scannable QR code (encoding the public builder-profile URL)
+ * Draws QR code into the specified QrZone inside the Yellow Box.
  */
 export async function drawQrCode(
   ctx: CanvasRenderingContext2D,
-  value: string,
-  zone: { x: number; y: number; size: number },
-  options?: { dark?: string; light?: string }
+  dataUrl: string,
+  qrZone: QrZoneConfig,
+  colors: { dark: string; light: string } = { dark: '#012119', light: '#ffffff' }
 ): Promise<void> {
-  if (typeof document === 'undefined') return;
+  try {
+    const qrCanvas = document.createElement('canvas');
+    await QRCode.toCanvas(qrCanvas, dataUrl, {
+      width: qrZone.size,
+      margin: 1,
+      color: {
+        dark: colors.dark,
+        light: colors.light,
+      },
+    });
 
-  const qrCanvas = document.createElement('canvas');
-  await QRCode.toCanvas(qrCanvas, value, {
-    width: zone.size,
-    margin: 0,
-    color: {
-      dark: options?.dark || '#021a14',
-      light: options?.light || '#ffffff',
-    },
-  });
+    ctx.save();
+    // Draw clean white plate background
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(qrZone.x, qrZone.y, qrZone.size, qrZone.size);
 
-  const pad = Math.round(zone.size * 0.08);
+    ctx.drawImage(qrCanvas, qrZone.x, qrZone.y, qrZone.size, qrZone.size);
+    ctx.restore();
+  } catch (err) {
+    console.error('Failed to generate QR code:', err);
+  }
+}
+
+/**
+ * Draws a clean deterministic horizontal barcode inside the Yellow Box.
+ */
+export function drawBarcode(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  zone: ZoneBounds,
+  options: { bar?: string; bg?: string } = {}
+): void {
+  const barColor = options.bar || '#012119';
+
   ctx.save();
-  ctx.fillStyle = options?.light || '#ffffff';
-  ctx.beginPath();
-  ctx.roundRect(zone.x - pad, zone.y - pad, zone.size + pad * 2, zone.size + pad * 2, 6);
-  ctx.fill();
-  ctx.restore();
 
-  ctx.drawImage(qrCanvas, zone.x, zone.y, zone.size, zone.size);
+  // Clear barcode background area inside yellow box
+  ctx.fillStyle = options.bg || GREEN_DARK;
+  ctx.fillRect(zone.x, zone.y, zone.width, zone.height);
+
+  // Generate deterministic bar pattern from text hash
+  let hash = 0;
+  for (let i = 0; i < text.length; i++) {
+    hash = (hash << 5) - hash + text.charCodeAt(i);
+    hash |= 0;
+  }
+
+  const numBars = 65;
+  const barWidth = zone.width / numBars;
+
+  ctx.fillStyle = barColor;
+  for (let i = 0; i < numBars; i++) {
+    const bit = (hash >> (i % 31)) & 1;
+    const isThin = (i % 2 === 0) || (bit === 1);
+
+    if (isThin || i === 0 || i === numBars - 1) {
+      const x = zone.x + i * barWidth;
+      const w = barWidth * (isThin ? 0.7 : 0.45);
+      ctx.fillRect(x, zone.y, w, zone.height);
+    }
+  }
+
+  ctx.restore();
 }

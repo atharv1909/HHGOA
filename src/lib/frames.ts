@@ -1,125 +1,224 @@
 // ═══════════════════════════════════════════════════════
-// HH GOA 2026 — CARD ENGINE
-// Dedicated Builder ID card design based directly on the
-// card.png reference image template.
+// HH GOA 2026 — FRAME ENGINE
+// 100% Pixel-Perfect Coordinate Alignment against card.png (1748 x 1240)
 // ═══════════════════════════════════════════════════════
 
-export interface TextZone {
+export interface TextZoneConfig {
   x: number;
   y: number;
   maxWidth: number;
   fontSize: number;
-  fontFamily: 'display' | 'mono';
+  fontFamily: 'display' | 'mono' | 'sans';
   color: string;
-  align?: CanvasTextAlign;
+  align: 'left' | 'center' | 'right';
   weight?: string;
+  shadow?: boolean;
 }
 
-export interface BoxZone {
+export interface SocialsZoneConfig {
+  x: number;
+  y: number;
+  maxWidth: number;
+  fontSize: number;
+  color: string;
+}
+
+export interface ZoneBounds {
   x: number;
   y: number;
   width: number;
   height: number;
 }
 
+export interface QrZoneConfig {
+  x: number;
+  y: number;
+  size: number;
+}
+
 export interface FrameConfig {
   id: string;
   name: string;
-  description: string;
-  paletteMode: 'dark' | 'light';
+  tagline: string;
+  badgeText: string;
   bgColor: string;
-  photoZone: BoxZone;
-  idBoxZone: BoxZone;
-  qrZone: { x: number; y: number; size: number };
-  barcodeZone: BoxZone;
+
+  photoZone: ZoneBounds;
+  pfpPhotoZone: ZoneBounds;
+  idBoxZone: ZoneBounds;
+  qrZone: QrZoneConfig;
+  barcodeZone: ZoneBounds;
+
   textZones: {
-    name: TextZone;
-    stack: TextZone;
-    title: TextZone;
-    builderId: TextZone;
-    timestamp: TextZone;
-    socials: TextZone;
+    name: TextZoneConfig;
+    stack: TextZoneConfig;
+    title: TextZoneConfig;
+    builderId: TextZoneConfig;
+    timestamp: TextZoneConfig;
+    socials: SocialsZoneConfig;
   };
-  renderBackground?: (ctx: CanvasRenderingContext2D, w: number, h: number) => void;
-  renderDecorations: (ctx: CanvasRenderingContext2D, w: number, h: number) => void;
-  pfpPhotoZone: BoxZone;
-  renderPfpDecorations: (ctx: CanvasRenderingContext2D, w: number, h: number) => void;
+
+  renderBackground: (
+    ctx: CanvasRenderingContext2D,
+    w: number,
+    h: number,
+    img?: HTMLImageElement | null
+  ) => void;
+  renderDecorations: (
+    ctx: CanvasRenderingContext2D,
+    w: number,
+    h: number
+  ) => void;
+  renderPfpDecorations: (
+    ctx: CanvasRenderingContext2D,
+    w: number,
+    h: number
+  ) => void;
 }
 
-const imageCache: Record<string, HTMLImageElement> = {};
+const CARD_IMAGE_PATH = '/card.png';
+let cachedCardImage: HTMLImageElement | null = null;
+let imageLoadPromise: Promise<HTMLImageElement> | null = null;
 
 export function loadCardImage(): Promise<HTMLImageElement> {
-  return new Promise((resolve) => {
-    if (typeof window === 'undefined') return;
-    const path = '/card.png';
-    if (imageCache[path] && imageCache[path].complete && imageCache[path].naturalWidth > 0) {
-      resolve(imageCache[path]);
-      return;
-    }
+  if (cachedCardImage && cachedCardImage.complete && cachedCardImage.naturalWidth > 0) {
+    return Promise.resolve(cachedCardImage);
+  }
+
+  if (imageLoadPromise) {
+    return imageLoadPromise;
+  }
+
+  imageLoadPromise = new Promise((resolve, reject) => {
     const img = new Image();
+    img.crossOrigin = 'anonymous';
+
     img.onload = () => {
-      imageCache[path] = img;
+      cachedCardImage = img;
       resolve(img);
     };
+
     img.onerror = () => {
-      const fallback = new Image();
-      fallback.onload = () => {
-        imageCache['/brand/card.png'] = fallback;
-        resolve(fallback);
+      // Fallback path check
+      const fallbackImg = new Image();
+      fallbackImg.crossOrigin = 'anonymous';
+      fallbackImg.onload = () => {
+        cachedCardImage = fallbackImg;
+        resolve(fallbackImg);
       };
-      fallback.src = '/brand/card.png';
+      fallbackImg.onerror = (err) => reject(err);
+      fallbackImg.src = '/brand/card.png';
     };
-    img.src = path;
+
+    img.src = CARD_IMAGE_PATH;
   });
+
+  return imageLoadPromise;
 }
 
 const GREEN_DARK = '#012119';
-const CREAM = '#FBE6A2';
-const WHITE = '#FFFFFF';
 
-const HACKERHOUSE_GOA: FrameConfig = {
-  id: 'hackerhouse-goa',
-  name: 'HackerHouse Goa 2026',
-  description: 'The official HH Goa 2026 Builder ID Card.',
-  paletteMode: 'dark',
-  bgColor: GREEN_DARK,
+export const FRAMES: Record<string, FrameConfig> = {
+  HACKERHOUSE_GOA: {
+    id: 'HACKERHOUSE_GOA',
+    name: 'Hacker House Goa Official Card',
+    tagline: 'Official 2026 Participant ID Card',
+    badgeText: 'GOA 2026',
+    bgColor: GREEN_DARK,
 
-  // Inner pink square window inside the scalloped border on card.png
-  photoZone: { x: 635, y: 278, width: 398, height: 398 },
+    // Inner pink window inside scalloped photo frame
+    photoZone: { x: 645, y: 240, width: 460, height: 430 },
+    pfpPhotoZone: { x: 190, y: 190, width: 700, height: 700 },
 
-  // Yellow ID Box: x=467, y=800, width=814, height=150
-  idBoxZone: { x: 467, y: 800, width: 814, height: 150 },
-  qrZone: { x: 488, y: 812, size: 125 },
-  barcodeZone: { x: 640, y: 868, width: 600, height: 65 },
+    // Yellow ID box bounds
+    idBoxZone: { x: 467, y: 770, width: 814, height: 140 },
 
-  textZones: {
-    name: { x: 834, y: 650, maxWidth: 900, fontSize: 58, fontFamily: 'display', color: CREAM, align: 'center', weight: '900' },
-    stack: { x: 834, y: 745, maxWidth: 900, fontSize: 26, fontFamily: 'mono', color: WHITE, align: 'center', weight: '800' },
-    title: { x: 1546, y: 910, maxWidth: 220, fontSize: 22, fontFamily: 'mono', color: GREEN_DARK, align: 'center', weight: '900' },
-    builderId: { x: 640, y: 812, maxWidth: 600, fontSize: 44, fontFamily: 'mono', color: GREEN_DARK, align: 'left', weight: '900' },
-    timestamp: { x: 834, y: 1180, maxWidth: 500, fontSize: 14, fontFamily: 'mono', color: 'rgba(251,230,162,0.55)', align: 'center' },
-    socials: { x: 834, y: 1150, maxWidth: 900, fontSize: 18, fontFamily: 'mono', color: CREAM, align: 'center', weight: '700' },
-  },
+    // QR Code — left white plate inside yellow box
+    qrZone: { x: 490, y: 780, size: 125 },
 
-  renderBackground: (ctx, w, h) => {
-    loadCardImage().then((img) => {
-      if (img && img.complete && img.naturalWidth > 0) {
-        ctx.drawImage(img, 0, 0, w, h);
-      }
-    }).catch(() => {
+    // Horizontal Barcode — bottom right inside yellow box
+    barcodeZone: { x: 650, y: 835, width: 600, height: 65 },
+
+    textZones: {
+      name: {
+        x: 874,
+        y: 645,
+        maxWidth: 1000,
+        fontSize: 54,
+        fontFamily: 'display',
+        color: '#FBE6A2',
+        align: 'center',
+        weight: '900',
+      },
+      stack: {
+        x: 874,
+        y: 730,
+        maxWidth: 1000,
+        fontSize: 26,
+        fontFamily: 'mono',
+        color: '#FFFFFF',
+        align: 'center',
+        weight: '800',
+      },
+      builderId: {
+        x: 650,
+        y: 782,
+        maxWidth: 600,
+        fontSize: 44,
+        fontFamily: 'mono',
+        color: '#012119',
+        align: 'left',
+        weight: '900',
+      },
+      title: {
+        x: 874,
+        y: 760,
+        maxWidth: 900,
+        fontSize: 24,
+        fontFamily: 'sans',
+        color: '#FFFFFF',
+        align: 'center',
+      },
+      timestamp: {
+        x: 1620,
+        y: 1180,
+        maxWidth: 400,
+        fontSize: 22,
+        fontFamily: 'mono',
+        color: '#28C76F',
+        align: 'right',
+      },
+      socials: {
+        x: 874,
+        y: 1180,
+        maxWidth: 800,
+        fontSize: 20,
+        color: '#FFFFFF',
+      },
+    },
+
+    renderBackground(ctx, w, h, img) {
       ctx.fillStyle = GREEN_DARK;
       ctx.fillRect(0, 0, w, h);
-    });
+
+      if (img && img.complete && img.naturalWidth > 0) {
+        ctx.drawImage(img, 0, 0, w, h);
+      } else if (cachedCardImage && cachedCardImage.complete) {
+        ctx.drawImage(cachedCardImage, 0, 0, w, h);
+      }
+    },
+
+    renderDecorations(_ctx, _w, _h) {
+      // Background artwork card.png contains all decorative elements
+    },
+
+    renderPfpDecorations(ctx, w, h) {
+      ctx.fillStyle = GREEN_DARK;
+      ctx.fillRect(0, 0, w, h);
+    },
   },
-
-  renderDecorations: () => {},
-
-  pfpPhotoZone: { x: 635, y: 278, width: 398, height: 398 },
-  renderPfpDecorations: () => {},
 };
 
-export const FRAMES: FrameConfig[] = [HACKERHOUSE_GOA];
-
-export function getFrame(_id?: string): FrameConfig {
-  return HACKERHOUSE_GOA;
+export function getFrame(id?: string): FrameConfig {
+  return FRAMES[id || 'HACKERHOUSE_GOA'] || FRAMES.HACKERHOUSE_GOA;
 }

@@ -1,0 +1,1397 @@
+diff --git a/package-lock.json b/package-lock.json
+index 3cc6929..5c94493 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -620,9 +620,6 @@
+       "cpu": [
+         "arm"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "LGPL-3.0-or-later",
+       "optional": true,
+       "os": [
+@@ -639,9 +636,6 @@
+       "cpu": [
+         "arm64"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "LGPL-3.0-or-later",
+       "optional": true,
+       "os": [
+@@ -658,9 +652,6 @@
+       "cpu": [
+         "ppc64"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "LGPL-3.0-or-later",
+       "optional": true,
+       "os": [
+@@ -677,9 +668,6 @@
+       "cpu": [
+         "riscv64"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "LGPL-3.0-or-later",
+       "optional": true,
+       "os": [
+@@ -696,9 +684,6 @@
+       "cpu": [
+         "s390x"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "LGPL-3.0-or-later",
+       "optional": true,
+       "os": [
+@@ -715,9 +700,6 @@
+       "cpu": [
+         "x64"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "LGPL-3.0-or-later",
+       "optional": true,
+       "os": [
+@@ -734,9 +716,6 @@
+       "cpu": [
+         "arm64"
+       ],
+-      "libc": [
+-        "musl"
+-      ],
+       "license": "LGPL-3.0-or-later",
+       "optional": true,
+       "os": [
+@@ -753,9 +732,6 @@
+       "cpu": [
+         "x64"
+       ],
+-      "libc": [
+-        "musl"
+-      ],
+       "license": "LGPL-3.0-or-later",
+       "optional": true,
+       "os": [
+@@ -772,9 +748,6 @@
+       "cpu": [
+         "arm"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "Apache-2.0",
+       "optional": true,
+       "os": [
+@@ -797,9 +770,6 @@
+       "cpu": [
+         "arm64"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "Apache-2.0",
+       "optional": true,
+       "os": [
+@@ -822,9 +792,6 @@
+       "cpu": [
+         "ppc64"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "Apache-2.0",
+       "optional": true,
+       "os": [
+@@ -847,9 +814,6 @@
+       "cpu": [
+         "riscv64"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "Apache-2.0",
+       "optional": true,
+       "os": [
+@@ -872,9 +836,6 @@
+       "cpu": [
+         "s390x"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "Apache-2.0",
+       "optional": true,
+       "os": [
+@@ -897,9 +858,6 @@
+       "cpu": [
+         "x64"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "Apache-2.0",
+       "optional": true,
+       "os": [
+@@ -922,9 +880,6 @@
+       "cpu": [
+         "arm64"
+       ],
+-      "libc": [
+-        "musl"
+-      ],
+       "license": "Apache-2.0",
+       "optional": true,
+       "os": [
+@@ -947,9 +902,6 @@
+       "cpu": [
+         "x64"
+       ],
+-      "libc": [
+-        "musl"
+-      ],
+       "license": "Apache-2.0",
+       "optional": true,
+       "os": [
+@@ -1217,9 +1169,6 @@
+       "cpu": [
+         "arm64"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1236,9 +1185,6 @@
+       "cpu": [
+         "arm64"
+       ],
+-      "libc": [
+-        "musl"
+-      ],
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1255,9 +1201,6 @@
+       "cpu": [
+         "x64"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1274,9 +1217,6 @@
+       "cpu": [
+         "x64"
+       ],
+-      "libc": [
+-        "musl"
+-      ],
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1855,9 +1795,6 @@
+         "arm64"
+       ],
+       "dev": true,
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1872,9 +1809,6 @@
+         "arm64"
+       ],
+       "dev": true,
+-      "libc": [
+-        "musl"
+-      ],
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1889,9 +1823,6 @@
+         "loong64"
+       ],
+       "dev": true,
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1906,9 +1837,6 @@
+         "loong64"
+       ],
+       "dev": true,
+-      "libc": [
+-        "musl"
+-      ],
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1923,9 +1851,6 @@
+         "ppc64"
+       ],
+       "dev": true,
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1940,9 +1865,6 @@
+         "riscv64"
+       ],
+       "dev": true,
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1957,9 +1879,6 @@
+         "riscv64"
+       ],
+       "dev": true,
+-      "libc": [
+-        "musl"
+-      ],
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1974,9 +1893,6 @@
+         "s390x"
+       ],
+       "dev": true,
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1991,9 +1907,6 @@
+         "x64"
+       ],
+       "dev": true,
+-      "libc": [
+-        "glibc"
+-      ],
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -2008,9 +1921,6 @@
+         "x64"
+       ],
+       "dev": true,
+-      "libc": [
+-        "musl"
+-      ],
+       "license": "MIT",
+       "optional": true,
+       "os": [
+diff --git a/src/app/page.tsx b/src/app/page.tsx
+index 08feac1..e1a131d 100644
+--- a/src/app/page.tsx
++++ b/src/app/page.tsx
+@@ -25,7 +25,6 @@ export default function Home() {
+     offsetY: 0,
+   });
+   const [selectedFilter, setSelectedFilter] = useState<PhotoFilterMode>('natural');
+-  const [selectedFrameId, setSelectedFrameId] = useState<string>('goa-genesis');
+   const [builderId] = useState<string>(() => generateBuilderId());
+ 
+   const [formData, setFormData] = useState<BuilderData>({
+@@ -89,7 +88,7 @@ export default function Home() {
+ 
+     startTransition(async () => {
+       try {
+-        const frame = getFrame(selectedFrameId);
++        const frame = getFrame();
+         const blob = await exportCard({
+           image: image.bitmap,
+           imageTransform: transform,
+@@ -117,7 +116,7 @@ export default function Home() {
+     setResultBlob(null);
+   };
+ 
+-  const frame = getFrame(selectedFrameId);
++  const frame = getFrame();
+ 
+   // Step Wizard click actions
+   const handleWizardClick = (targetStep: Step) => {
+@@ -271,8 +270,6 @@ export default function Home() {
+             />
+ 
+             <FrameSelector
+-              selectedId={selectedFrameId}
+-              onSelect={setSelectedFrameId}
+               selectedFilter={selectedFilter}
+               onSelectFilter={setSelectedFilter}
+             />
+diff --git a/src/components/CardPreview.tsx b/src/components/CardPreview.tsx
+index 17811ca..9a680b3 100644
+--- a/src/components/CardPreview.tsx
++++ b/src/components/CardPreview.tsx
+@@ -7,7 +7,7 @@ import { ProcessedImage, PhotoFilterMode, applyFilterToCanvas } from '@/lib/imag
+ import { ImageTransform } from './PhotoEditor';
+ import PhotoEditor from './PhotoEditor';
+ import { formatBuilderId } from '@/lib/idGenerator';
+-import { drawTextZone, drawSocialsZone, drawQrCode } from '@/lib/cardRenderer';
++import { drawTextZone, drawSocialsZone, drawQrCode, drawBarcode } from '@/lib/cardRenderer';
+ import styles from '@/styles/components/CardPreview.module.css';
+ 
+ interface CardPreviewProps {
+@@ -49,7 +49,9 @@ export default function CardPreview({
+   const baseW = 1080;
+   const baseH = isPfp ? 1080 : 1350;
+ 
+-  const isCircular = frame.id === 'goa-genesis' && !isPfp;
++  // Photo is always a square/rect crop — the scalloped ring around it is a
++  // decoration drawn on top, not a mask on the photo itself.
++  const isCircular = false;
+ 
+   const profileUrl =
+     typeof window !== 'undefined'
+@@ -139,10 +141,17 @@ export default function CardPreview({
+       }
+ 
+       // Scannable QR, unique per builder (encodes their public profile URL).
++      // Lives in its own reserved corner of the yellow ID box.
+       await drawQrCode(ctx, profileUrl, frame.qrZone, {
+         dark: '#021a14',
+         light: '#ffffff',
+       });
++
++      // Horizontal barcode — its own reserved rectangle inside the ID box,
++      // below the big builder-ID text, never touching the QR.
++      drawBarcode(ctx, formatBuilderId(builderId), frame.barcodeZone, {
++        bar: '#021a14',
++      });
+     };
+ 
+     render().catch(() => {
+diff --git a/src/components/FrameSelector.tsx b/src/components/FrameSelector.tsx
+index 5aff76a..1409f0a 100644
+--- a/src/components/FrameSelector.tsx
++++ b/src/components/FrameSelector.tsx
+@@ -1,12 +1,9 @@
+ 'use client';
+ 
+-import { FRAMES, FrameConfig } from '@/lib/frames';
+ import { PhotoFilterMode } from '@/lib/imageProcessor';
+ import styles from '@/styles/components/FrameSelector.module.css';
+ 
+ interface FrameSelectorProps {
+-  selectedId: string;
+-  onSelect: (id: string) => void;
+   selectedFilter: PhotoFilterMode;
+   onSelectFilter: (filter: PhotoFilterMode) => void;
+ }
+@@ -18,16 +15,17 @@ const FILTERS: { id: PhotoFilterMode; label: string; icon: string }[] = [
+ ];
+ 
+ export default function FrameSelector({
+-  selectedId,
+-  onSelect,
+   selectedFilter,
+   onSelectFilter,
+ }: FrameSelectorProps) {
++  // There's a single, dedicated HH Goa 2026 Builder ID card — no frame-style
++  // picker needed. If more card designs are ever added to FRAMES, a style
++  // picker can be reintroduced here; for now we keep the UI to what the
++  // product actually needs: the photo filter only.
+   return (
+     <div className={styles.selectorContainer}>
+-      {/* 1. Photo Filter Selection */}
+       <div className={styles.sectionGroup}>
+-        <span className={styles.sectionTitle}>1. PHOTO FILTER</span>
++        <span className={styles.sectionTitle}>PHOTO FILTER</span>
+         <div className={styles.filterGrid}>
+           {FILTERS.map((f) => (
+             <button
+@@ -43,40 +41,6 @@ export default function FrameSelector({
+           ))}
+         </div>
+       </div>
+-
+-      {/* 2. Frame Style Selection */}
+-      <div className={styles.sectionGroup}>
+-        <span className={styles.sectionTitle}>2. FRAME STYLE</span>
+-        <div className={styles.grid}>
+-          {FRAMES.map((frame: FrameConfig) => {
+-            const isSelected = frame.id === selectedId;
+-            return (
+-              <button
+-                key={frame.id}
+-                className={`${styles.cardBtn} ${
+-                  isSelected ? styles.cardBtnSelected : ''
+-                }`}
+-                onClick={() => onSelect(frame.id)}
+-              >
+-                <div
+-                  className={styles.miniPreview}
+-                  style={{ backgroundColor: frame.bgColor }}
+-                >
+-                  <div className={styles.miniHeader}>
+-                    <span className={styles.miniTitle}>HACKER GOA</span>
+-                  </div>
+-                  <div className={styles.miniPhotoZone} />
+-                  <div className={styles.miniFooter}>
+-                    <div className={styles.miniLine} />
+-                    <div className={styles.miniLineShort} />
+-                  </div>
+-                </div>
+-                <span className={styles.cardLabel}>{frame.name}</span>
+-              </button>
+-            );
+-          })}
+-        </div>
+-      </div>
+     </div>
+   );
+ }
+diff --git a/src/lib/canvasExporter.ts b/src/lib/canvasExporter.ts
+index 8fe0801..3f4dfe4 100644
+--- a/src/lib/canvasExporter.ts
++++ b/src/lib/canvasExporter.ts
+@@ -10,7 +10,7 @@
+ import { FrameConfig } from './frames';
+ import { formatBuilderId } from './idGenerator';
+ import { PhotoFilterMode, applyFilterToCanvas } from './imageProcessor';
+-import { drawTextZone, drawSocialsZone, drawQrCode } from './cardRenderer';
++import { drawTextZone, drawSocialsZone, drawQrCode, drawBarcode } from './cardRenderer';
+ 
+ export interface ExportData {
+   image: ImageBitmap;
+@@ -64,15 +64,9 @@ export async function exportCard(data: ExportData): Promise<Blob> {
+ 
+   ctx.save();
+   ctx.beginPath();
+-
+-  if (data.frame.id === 'goa-genesis' && !isPfp) {
+-    const cx = photoZone.x + photoZone.width / 2;
+-    const cy = photoZone.y + photoZone.height / 2;
+-    const radius = photoZone.width / 2;
+-    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+-  } else {
+-    ctx.rect(photoZone.x, photoZone.y, photoZone.width, photoZone.height);
+-  }
++  // Photo is always a clean square/rect clip — the card's scalloped
++  // frame is drawn as a decoration ring around it, not a photo mask.
++  ctx.rect(photoZone.x, photoZone.y, photoZone.width, photoZone.height);
+   ctx.clip();
+ 
+   const img = data.image;
+@@ -127,14 +121,21 @@ export async function exportCard(data: ExportData): Promise<Blob> {
+     }
+ 
+     // 6. Scannable QR — unique per builder, encodes their public profile URL.
++    //    Lives in its own reserved corner of the ID box.
+     const profileUrl =
+       typeof window !== 'undefined'
+         ? `${window.location.origin}/builder/${data.builderId}`
+         : `https://hhgoa.com/builder/${data.builderId}`;
+     await drawQrCode(ctx, profileUrl, data.frame.qrZone, {
+-      dark: data.frame.paletteMode === 'dark' ? '#021a14' : '#021a14',
++      dark: '#021a14',
+       light: '#ffffff',
+     });
++
++    // 7. Horizontal barcode — its own reserved rectangle, below the big
++    //    builder-ID text, never touching the QR or the text above it.
++    drawBarcode(ctx, formatBuilderId(data.builderId), data.frame.barcodeZone, {
++      bar: '#021a14',
++    });
+   }
+ 
+   return new Promise((resolve, reject) => {
+diff --git a/src/lib/cardRenderer.ts b/src/lib/cardRenderer.ts
+index 36e9cfe..d728c29 100644
+--- a/src/lib/cardRenderer.ts
++++ b/src/lib/cardRenderer.ts
+@@ -150,6 +150,61 @@ export function drawSocialsZone(
+   }
+ }
+ 
++/**
++ * Draws a horizontal decorative barcode (deterministic bars derived from
++ * the builder ID, so every card's barcode is unique but reproducible) plus
++ * a small human-readable caption underneath.
++ *
++ * IMPORTANT: this is drawn strictly inside `zone` — callers must give this
++ * function its own reserved rectangle inside the ID box, positioned so it
++ * never touches the QR code or the big builder-ID text next to it.
++ */
++export function drawBarcode(
++  ctx: CanvasRenderingContext2D,
++  code: string,
++  zone: { x: number; y: number; width: number; height: number },
++  options?: { bar?: string; caption?: boolean; captionColor?: string }
++) {
++  const barColor = options?.bar || '#021a14';
++  const showCaption = options?.caption !== false;
++
++  // Deterministic PRNG seeded from the code, so re-renders of the same
++  // builder ID always produce the same barcode pattern.
++  let seed = 0;
++  for (let i = 0; i < code.length; i++) seed = (seed * 31 + code.charCodeAt(i)) >>> 0;
++  if (seed === 0) seed = 42;
++  const rand = () => {
++    seed = (seed * 1664525 + 1013904223) >>> 0;
++    return seed / 0xffffffff;
++  };
++
++  const captionHeight = showCaption ? Math.round(zone.height * 0.28) : 0;
++  const barsHeight = zone.height - captionHeight;
++
++  ctx.save();
++  ctx.fillStyle = barColor;
++  let x = zone.x;
++  const endX = zone.x + zone.width;
++  while (x < endX - 2) {
++    const w = 2 + Math.floor(rand() * 4); // 2–5px bars
++    const gap = 2 + Math.floor(rand() * 3); // 2–4px gaps
++    const actualW = Math.min(w, endX - x);
++    ctx.fillRect(x, zone.y, actualW, barsHeight);
++    x += w + gap;
++  }
++  ctx.restore();
++
++  if (showCaption) {
++    ctx.save();
++    ctx.font = `700 ${Math.round(captionHeight * 0.8)}px "JetBrains Mono", monospace`;
++    ctx.fillStyle = options?.captionColor || barColor;
++    ctx.textAlign = 'center';
++    ctx.textBaseline = 'top';
++    ctx.fillText(code, zone.x + zone.width / 2, zone.y + barsHeight + 2, zone.width);
++    ctx.restore();
++  }
++}
++
+ /**
+  * Draws a scannable QR code (encoding the public builder-profile URL)
+  */
+diff --git a/src/lib/frames.ts b/src/lib/frames.ts
+index 35d0bfd..b186777 100644
+--- a/src/lib/frames.ts
++++ b/src/lib/frames.ts
+@@ -1,6 +1,8 @@
+ // ═══════════════════════════════════════════════════════
+-// HH GOA 2026 — ULTIMATE FRAME ENGINE WITH DEDICATED ARTWORKS
+-// High contrast, stunning UI/UX, unique AI artwork per frame template
++// HH GOA 2026 — CARD ENGINE
++// A single, dedicated Builder ID card design (matches the
++// approved reference mockup 1:1). No frame-style picker —
++// this IS the card.
+ // ═══════════════════════════════════════════════════════
+ 
+ export interface TextZone {
+@@ -14,6 +16,13 @@ export interface TextZone {
+   weight?: string;
+ }
+ 
++export interface BoxZone {
++  x: number;
++  y: number;
++  width: number;
++  height: number;
++}
++
+ export interface FrameConfig {
+   id: string;
+   name: string;
+@@ -21,13 +30,21 @@ export interface FrameConfig {
+   paletteMode: 'dark' | 'light';
+   bgColor: string;
+   photoZone: { x: number; y: number; width: number; height: number };
+-  /** Square QR code encoding the public builder-profile URL, drawn on
+-   *  the FRONT of the card, directly above the builderId text. */
++  /** The yellow ID box on the front of the card — QR + big builder-ID
++   *  text + horizontal barcode all live INSIDE this rectangle, each in
++   *  its own reserved sub-area, so they never overlap. */
++  idBoxZone: BoxZone;
++  /** QR code — left inside idBoxZone. */
+   qrZone: { x: number; y: number; size: number };
++  /** Horizontal barcode — right of the QR, below the big builder-ID text,
++   *  still inside idBoxZone. */
++  barcodeZone: BoxZone;
+   textZones: {
+     name: TextZone;
+     stack: TextZone;
++    /** Builder title / "class" — rendered inside the circular badge. */
+     title: TextZone;
++    /** Big, bold builder-ID readout inside the yellow box, next to the QR. */
+     builderId: TextZone;
+     timestamp: TextZone;
+     /** Dedicated zone for the optional-socials row — must never share
+@@ -40,406 +57,416 @@ export interface FrameConfig {
+   renderPfpDecorations: (ctx: CanvasRenderingContext2D, w: number, h: number) => void;
+ }
+ 
+-// ── DEDICATED ARTWORK IMAGE CACHE ──
+-const imageCache: Record<string, HTMLImageElement> = {};
++// ── PALETTE (from the approved reference) ──
++const GREEN_DARK = '#012119';
++const GREEN_PANEL = '#004D34';
++const PINK = '#FF2A8D';
++const YELLOW = '#FFF78C';
++const ORANGE = '#F5A623';
++const CREAM = '#FBE6A2';
++
++// ── SMALL DRAW HELPERS ──
++
++function drawHindiBadge(ctx: CanvasRenderingContext2D, x: number, y: number) {
++  // Small pink "गोवा" wordmark badge, sitting on a dark-green pill —
++  // matches the reference's header treatment.
++  const w = 190;
++  const h = 78;
++  ctx.save();
++  ctx.fillStyle = GREEN_PANEL;
++  ctx.beginPath();
++  ctx.roundRect(x, y, w, h, 8);
++  ctx.fill();
++  ctx.fillStyle = PINK;
++  ctx.font = '900 44px system-ui, -apple-system, sans-serif';
++  ctx.textAlign = 'center';
++  ctx.textBaseline = 'middle';
++  ctx.fillText('गोवा', x + w / 2, y + h / 2 + 4);
++  ctx.restore();
++}
+ 
+-function getFrameImage(path: string): HTMLImageElement | null {
+-  if (typeof window === 'undefined') return null;
+-  if (!imageCache[path]) {
+-    const img = new Image();
+-    img.src = path;
+-    imageCache[path] = img;
++function drawPixelMark(ctx: CanvasRenderingContext2D, x: number, y: number) {
++  // Small pink pixel-grid accent mark, top-left — purely decorative,
++  // echoes the "8-bit signal" motif without literal cyberpunk cliché.
++  const cell = 15;
++  const gap = 5;
++  const pattern = [
++    [1, 0, 1, 0, 1],
++    [0, 1, 1, 1, 0],
++    [1, 1, 1, 1, 1],
++    [0, 1, 1, 1, 0],
++    [1, 0, 1, 0, 1],
++  ];
++  ctx.save();
++  ctx.fillStyle = PINK;
++  for (let r = 0; r < pattern.length; r++) {
++    for (let c = 0; c < pattern[r].length; c++) {
++      if (pattern[r][c]) {
++        ctx.fillRect(x + c * (cell + gap), y + r * (cell + gap), cell, cell);
++      }
++    }
+   }
+-  return imageCache[path];
++  ctx.restore();
+ }
+ 
+-// ── ARTWORK HELPERS ──
++function drawLeafAccent(ctx: CanvasRenderingContext2D, x: number, y: number) {
++  // Simple single-line leaf/frond accent, top-right corner.
++  ctx.save();
++  ctx.strokeStyle = 'rgba(251, 230, 162, 0.55)';
++  ctx.lineWidth = 3;
++  ctx.lineCap = 'round';
++  for (let i = 0; i < 5; i++) {
++    const len = 70 - i * 8;
++    const angle = (-30 - i * 14) * (Math.PI / 180);
++    ctx.beginPath();
++    ctx.moveTo(x, y);
++    ctx.quadraticCurveTo(
++      x + Math.cos(angle) * len * 0.6,
++      y + Math.sin(angle) * len * 0.3,
++      x + Math.cos(angle) * len,
++      y + Math.sin(angle) * len
++    );
++    ctx.stroke();
++  }
++  ctx.restore();
++}
+ 
+-function drawHindiText(
+-  ctx: CanvasRenderingContext2D,
+-  text: string,
+-  x: number,
+-  y: number,
+-  fontSize: number,
+-  color: string = '#FF007A'
+-) {
++function drawPalmSilhouette(ctx: CanvasRenderingContext2D, x: number, y: number, scale = 1) {
++  // Simple palm-tree silhouette, bottom-left corner accent.
+   ctx.save();
+-  ctx.font = `900 ${fontSize}px system-ui, -apple-system, sans-serif`;
+-  ctx.fillStyle = color;
+-  ctx.shadowColor = 'rgba(255, 0, 122, 0.6)';
+-  ctx.shadowBlur = 12;
+-  ctx.textAlign = 'center';
+-  ctx.fillText(text, x, y);
++  ctx.translate(x, y);
++  ctx.scale(scale, scale);
++  ctx.fillStyle = 'rgba(2, 26, 20, 0.5)';
++
++  // trunk
++  ctx.beginPath();
++  ctx.moveTo(0, 0);
++  ctx.quadraticCurveTo(-6, -60, 4, -120);
++  ctx.lineTo(14, -120);
++  ctx.quadraticCurveTo(6, -60, 12, 0);
++  ctx.closePath();
++  ctx.fill();
++
++  // fronds
++  const frondAngles = [-160, -130, -100, -70, -40, -10];
++  for (const deg of frondAngles) {
++    const a = (deg * Math.PI) / 180;
++    ctx.beginPath();
++    ctx.moveTo(8, -120);
++    ctx.quadraticCurveTo(
++      8 + Math.cos(a) * 45,
++      -120 + Math.sin(a) * 45,
++      8 + Math.cos(a) * 85,
++      -120 + Math.sin(a) * 85
++    );
++    ctx.lineWidth = 8;
++    ctx.strokeStyle = 'rgba(2, 26, 20, 0.5)';
++    ctx.lineCap = 'round';
++    ctx.stroke();
++  }
++  ctx.restore();
++}
++
++function drawSunRays(ctx: CanvasRenderingContext2D, cx: number, cy: number, innerR: number, outerR: number) {
++  ctx.save();
++  ctx.strokeStyle = YELLOW;
++  ctx.lineWidth = 6;
++  ctx.lineCap = 'round';
++  const rayCount = 20;
++  for (let i = 0; i < rayCount; i++) {
++    const a = (i / rayCount) * Math.PI * 2;
++    ctx.beginPath();
++    ctx.moveTo(cx + Math.cos(a) * innerR, cy + Math.sin(a) * innerR);
++    ctx.lineTo(cx + Math.cos(a) * outerR, cy + Math.sin(a) * outerR);
++    ctx.stroke();
++  }
+   ctx.restore();
+ }
+ 
+-function drawLanyardSlot(ctx: CanvasRenderingContext2D, w: number, y: number = 25) {
+-  const holeW = 120;
+-  const holeH = 20;
+-  const holeX = (w - holeW) / 2;
++function drawScallopedFrame(ctx: CanvasRenderingContext2D, box: BoxZone, bumpR = 14) {
++  // Cream scalloped border ring around the photo, like a stamped
++  // certificate edge — matches the reference photo frame exactly.
++  ctx.save();
++  ctx.fillStyle = CREAM;
++  const { x, y, width, height } = box;
++
++  const bumpsX = Math.round(width / (bumpR * 2));
++  const stepX = width / bumpsX;
++  const bumpsY = Math.round(height / (bumpR * 2));
++  const stepY = height / bumpsY;
+ 
+-  ctx.fillStyle = '#021a14';
++  // base plate
+   ctx.beginPath();
+-  ctx.roundRect(holeX, y, holeW, holeH, 10);
++  ctx.roundRect(x, y, width, height, 4);
+   ctx.fill();
+ 
+-  ctx.strokeStyle = '#FFF78C';
++  // scallops along all 4 edges
++  for (let i = 0; i <= bumpsX; i++) {
++    ctx.beginPath();
++    ctx.arc(x + i * stepX, y, bumpR, 0, Math.PI * 2);
++    ctx.fill();
++    ctx.beginPath();
++    ctx.arc(x + i * stepX, y + height, bumpR, 0, Math.PI * 2);
++    ctx.fill();
++  }
++  for (let i = 0; i <= bumpsY; i++) {
++    ctx.beginPath();
++    ctx.arc(x, y + i * stepY, bumpR, 0, Math.PI * 2);
++    ctx.fill();
++    ctx.beginPath();
++    ctx.arc(x + width, y + i * stepY, bumpR, 0, Math.PI * 2);
++    ctx.fill();
++  }
++  ctx.restore();
++}
++
++function drawVine(ctx: CanvasRenderingContext2D, x: number, yTop: number, yBottom: number) {
++  // Slim decorative vine with two small "flower" dots, right of the photo.
++  ctx.save();
++  ctx.strokeStyle = 'rgba(2, 26, 20, 0.45)';
+   ctx.lineWidth = 2.5;
++  ctx.beginPath();
++  ctx.moveTo(x, yTop);
++  const midY = (yTop + yBottom) / 2;
++  ctx.quadraticCurveTo(x + 14, yTop + (midY - yTop) * 0.5, x, midY);
++  ctx.quadraticCurveTo(x - 14, midY + (yBottom - midY) * 0.5, x, yBottom);
+   ctx.stroke();
++  ctx.restore();
+ 
+-  ctx.fillStyle = '#FF007A';
+-  ctx.fillRect(holeX + 15, y - 25, holeW - 30, 25);
+-  ctx.fillStyle = '#FFF78C';
+-  ctx.font = '800 11px "JetBrains Mono", monospace';
+-  ctx.textAlign = 'center';
+-  ctx.fillText('HH GOA', w / 2, y - 8);
++  const flowerAt = (fy: number, r: number) => {
++    ctx.save();
++    ctx.fillStyle = PINK;
++    ctx.beginPath();
++    ctx.arc(x, fy, r, 0, Math.PI * 2);
++    ctx.fill();
++    ctx.fillStyle = GREEN_DARK;
++    ctx.beginPath();
++    ctx.arc(x, fy, r * 0.35, 0, Math.PI * 2);
++    ctx.fill();
++    ctx.restore();
++  };
++  flowerAt(yTop + (yBottom - yTop) * 0.32, 9);
++  flowerAt(yTop + (yBottom - yTop) * 0.7, 7);
++}
++
++function drawCornerAccent(ctx: CanvasRenderingContext2D, x: number, y: number, flip: boolean) {
++  // Small curved white accent mark, echoing the box's corner detailing.
++  ctx.save();
++  ctx.strokeStyle = 'rgba(255,255,255,0.85)';
++  ctx.lineWidth = 4;
++  ctx.lineCap = 'round';
++  ctx.beginPath();
++  if (!flip) {
++    ctx.arc(x + 22, y + 22, 18, Math.PI, Math.PI * 1.5);
++  } else {
++    ctx.arc(x - 22, y - 22, 18, 0, Math.PI * 0.5);
++  }
++  ctx.stroke();
++  ctx.restore();
+ }
+ 
+ // ══════════════════════════════════════════════════════
+-// FRAME 1: GOA GENESIS (Hero Official Badge with Beach Sunset Art)
++// THE CARD: HACKERHOUSE GOA 2026 — BUILDER ID
+ // ══════════════════════════════════════════════════════
+-const GOA_GENESIS: FrameConfig = {
+-  id: 'goa-genesis',
+-  name: 'Goa Genesis',
+-  description: 'Hero official badge with Goa beach sunset illustration & sunburst rim.',
+-  paletteMode: 'light',
+-  bgColor: '#012119',
+-  photoZone: { x: 240, y: 340, width: 600, height: 600 },
+-  // QR sits centered, directly above the HHG-XXXXX line.
+-  qrZone: { x: 494, y: 1158, size: 92 },
++const HACKERHOUSE_GOA: FrameConfig = {
++  id: 'hackerhouse-goa',
++  name: 'HackerHouse Goa 2026',
++  description: 'The official HH Goa 2026 Builder ID.',
++  paletteMode: 'dark',
++  bgColor: GREEN_DARK,
++
++  // Square photo, centered — sun rays radiate from behind it.
++  photoZone: { x: 290, y: 232, width: 500, height: 500 },
++
++  // The yellow ID box: QR (left) + big builder-ID text (top-right) +
++  // horizontal barcode (bottom-right) — three reserved sub-areas,
++  // nothing overlaps.
++  idBoxZone: { x: 60, y: 920, width: 960, height: 210 },
++  qrZone: { x: 95, y: 955, size: 140 },
++  barcodeZone: { x: 275, y: 1030, width: 705, height: 78 },
++
+   textZones: {
+-    // Hierarchy: name > stack/role > builder title > socials/ID/timestamp
+-    name: { x: 540, y: 985, maxWidth: 940, fontSize: 58, fontFamily: 'display', color: '#021a14', align: 'center', weight: '900' },
+-    stack: { x: 540, y: 1053, maxWidth: 860, fontSize: 28, fontFamily: 'mono', color: '#FF007A', align: 'center', weight: '800' },
+-    title: { x: 540, y: 1093, maxWidth: 860, fontSize: 23, fontFamily: 'mono', color: '#004D34', align: 'center', weight: '700' },
+-    socials: { x: 540, y: 1130, maxWidth: 840, fontSize: 17, fontFamily: 'mono', color: '#004D34', align: 'center', weight: '700' },
+-    builderId: { x: 540, y: 1258, maxWidth: 500, fontSize: 24, fontFamily: 'mono', color: '#021a14', align: 'center', weight: '800' },
+-    timestamp: { x: 540, y: 1289, maxWidth: 500, fontSize: 13, fontFamily: 'mono', color: 'rgba(2,26,20,0.55)', align: 'center' },
+-  },
+-  renderBackground: (ctx, w) => {
+-    const artImg = getFrameImage('/brand/frame_art_goa_genesis.png');
+-    if (artImg && artImg.complete && artImg.naturalWidth > 0) {
+-      ctx.drawImage(artImg, 0, 250, w, 710);
+-    } else {
+-      ctx.fillStyle = '#004D34';
+-      ctx.fillRect(0, 250, w, 710);
+-    }
++    name: { x: 540, y: 762, maxWidth: 940, fontSize: 62, fontFamily: 'display', color: CREAM, align: 'center', weight: '900' },
++    stack: { x: 540, y: 838, maxWidth: 900, fontSize: 26, fontFamily: 'mono', color: ORANGE, align: 'center', weight: '800' },
++    // Rendered inside the circular "builder class" badge, right of the photo.
++    title: { x: 935, y: 700, maxWidth: 150, fontSize: 16, fontFamily: 'mono', color: GREEN_DARK, align: 'center', weight: '800' },
++    builderId: { x: 275, y: 955, maxWidth: 700, fontSize: 46, fontFamily: 'mono', color: GREEN_DARK, align: 'left', weight: '900' },
++    timestamp: { x: 540, y: 1258, maxWidth: 500, fontSize: 13, fontFamily: 'mono', color: 'rgba(251,230,162,0.55)', align: 'center' },
++    socials: { x: 540, y: 1160, maxWidth: 860, fontSize: 18, fontFamily: 'mono', color: CREAM, align: 'center', weight: '700' },
+   },
++
+   renderDecorations: (ctx, w, h) => {
+-    // Card Border
+-    ctx.strokeStyle = '#FFF78C';
++    // Outer yellow border
++    ctx.strokeStyle = YELLOW;
+     ctx.lineWidth = 10;
+-    ctx.strokeRect(5, 5, w - 10, h - 10);
++    ctx.strokeRect(6, 6, w - 12, h - 12);
+ 
+-    // Lanyard punch hole
+-    drawLanyardSlot(ctx, w, 28);
++    // Decorative corner accents (kept small so they never reach into
++    // the text/photo/box areas below).
++    drawPixelMark(ctx, 55, 60);
++    drawLeafAccent(ctx, w - 60, 55);
++    drawPalmSilhouette(ctx, 60, h - 20, 0.85);
+ 
+-    // Header Title: HACKER (Left), गोवा (Center), HOUSE (Right) — HIGH CONTRAST SUNSHINE YELLOW
++    // ── HEADER ──
+     ctx.save();
+-    ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+-    ctx.shadowBlur = 10;
+-    ctx.fillStyle = '#FFF78C';
+-    ctx.font = '900 64px "Space Grotesk", sans-serif';
++    ctx.fillStyle = CREAM;
++    ctx.font = '900 54px "Space Grotesk", sans-serif';
+     ctx.textAlign = 'left';
+-    ctx.fillText('HACKER', 70, 185);
++    ctx.textBaseline = 'alphabetic';
++    ctx.fillText('HACKERHOUSE', 70, 100);
++    ctx.font = '40px system-ui, -apple-system, sans-serif';
++    ctx.fillText('🏝️', 560, 100);
++    ctx.restore();
+ 
+-    drawHindiText(ctx, 'गोवा', 540, 195, 76, '#FF007A');
++    drawHindiBadge(ctx, 640, 45);
+ 
+-    ctx.fillStyle = '#FFF78C';
+-    ctx.font = '900 64px "Space Grotesk", sans-serif';
+-    ctx.textAlign = 'right';
+-    ctx.fillText('HOUSE', w - 70, 185);
++    ctx.save();
++    ctx.fillStyle = ORANGE;
++    ctx.font = '800 28px "JetBrains Mono", monospace';
++    ctx.textAlign = 'left';
++    ctx.fillText('GOA, INDIA · 28–31 OCT 2026', 70, 155);
+     ctx.restore();
+ 
+-    // Subtitle Bar
+-    ctx.fillStyle = '#004D34';
+-    ctx.fillRect(70, 215, w - 140, 36);
+-    ctx.strokeStyle = '#FFF78C';
+-    ctx.lineWidth = 2;
+-    ctx.strokeRect(70, 215, w - 140, 36);
+-    ctx.fillStyle = '#FFF78C';
++    // "2:47 PM STUDIO" tag — right side, above the photo.
++    ctx.save();
++    ctx.fillStyle = GREEN_PANEL;
++    ctx.beginPath();
++    ctx.roundRect(w - 190, 60, 130, 60, 6);
++    ctx.fill();
++    ctx.fillStyle = YELLOW;
++    ctx.font = '900 18px "JetBrains Mono", monospace';
++    ctx.textAlign = 'center';
++    ctx.fillText('2:47PM', w - 125, 88);
++    ctx.font = '800 13px "JetBrains Mono", monospace';
++    ctx.fillText('STUDIO', w - 125, 108);
++    ctx.restore();
++
++    // "#FrameInGoa" tag — right side, below the studio tag.
++    ctx.save();
++    const tagW = 190;
++    const tagX = w - 60 - tagW;
++    ctx.fillStyle = YELLOW;
++    ctx.fillRect(tagX, 130, tagW * 0.4, 34);
++    ctx.fillStyle = PINK;
++    ctx.fillRect(tagX + tagW * 0.4, 130, tagW * 0.6, 34);
++    ctx.fillStyle = GREEN_DARK;
+     ctx.font = '800 15px "JetBrains Mono", monospace';
+     ctx.textAlign = 'center';
+-    ctx.fillText('GOA, INDIA · 28 – 31 OCT 2026 · 2:47 PM STUDIO', w / 2, 238);
++    ctx.fillText('#FrameInGoa', tagX + tagW / 2, 152);
++    ctx.restore();
+ 
+-    // Photo Ring Rim
+-    ctx.strokeStyle = '#FF007A';
+-    ctx.lineWidth = 10;
++    // ── PHOTO SUN + SCALLOPED FRAME ──
++    const photoZone = HACKERHOUSE_GOA.photoZone;
++    const cx = photoZone.x + photoZone.width / 2;
++    const cy = photoZone.y + photoZone.height / 2;
++    drawSunRays(ctx, cx, cy, photoZone.width / 2 + 10, photoZone.width / 2 + 55);
++    drawScallopedFrame(
++      ctx,
++      { x: photoZone.x - 18, y: photoZone.y - 18, width: photoZone.width + 36, height: photoZone.height + 36 },
++      13
++    );
++    // (The photo itself is drawn between the background and this
++    // decoration pass — this thin rim redraws on top so the photo
++    // reads as neatly inset within the scalloped frame.)
++    ctx.save();
++    ctx.strokeStyle = GREEN_DARK;
++    ctx.lineWidth = 6;
++    ctx.strokeRect(photoZone.x, photoZone.y, photoZone.width, photoZone.height);
++    ctx.restore();
++
++    drawVine(ctx, 830, photoZone.y + 20, photoZone.y + photoZone.height - 20);
++
++    // Builder-class circular badge, right of the photo.
++    const badgeCx = 935;
++    const badgeCy = 700;
++    ctx.save();
++    ctx.fillStyle = ORANGE;
+     ctx.beginPath();
+-    ctx.arc(540, 640, 308, 0, Math.PI * 2);
++    ctx.arc(badgeCx, badgeCy, 78, 0, Math.PI * 2);
++    ctx.fill();
++    ctx.strokeStyle = GREEN_DARK;
++    ctx.lineWidth = 4;
+     ctx.stroke();
++    ctx.fillStyle = GREEN_DARK;
++    ctx.font = '800 13px "JetBrains Mono", monospace';
++    ctx.textAlign = 'center';
++    ctx.fillText('BUILDER CLASS', badgeCx, badgeCy - 32);
++    ctx.restore();
+ 
+-    ctx.strokeStyle = '#FFF78C';
+-    ctx.lineWidth = 4;
++    // ── ID BOX (yellow) ──
++    const box = HACKERHOUSE_GOA.idBoxZone;
++    ctx.save();
++    ctx.fillStyle = YELLOW;
+     ctx.beginPath();
+-    ctx.arc(540, 640, 303, 0, Math.PI * 2);
++    ctx.roundRect(box.x, box.y, box.width, box.height, 26);
++    ctx.fill();
++    ctx.strokeStyle = GREEN_DARK;
++    ctx.lineWidth = 4;
+     ctx.stroke();
++    ctx.restore();
++    drawCornerAccent(ctx, box.x, box.y, false);
++    drawCornerAccent(ctx, box.x + box.width, box.y + box.height, true);
+ 
+-    // Sand Data Banner Box (grown to fit name/stack/title/socials/QR/ID)
+-    ctx.fillStyle = '#FFF78C';
+-    ctx.fillRect(40, 960, w - 80, 330);
+-    ctx.strokeStyle = '#021a14';
+-    ctx.lineWidth = 4;
+-    ctx.strokeRect(40, 960, w - 80, 330);
++    // White plate behind the QR so it stays crisp on the yellow field.
++    ctx.save();
++    const qz = HACKERHOUSE_GOA.qrZone;
++    const pad = 10;
++    ctx.fillStyle = '#ffffff';
++    ctx.beginPath();
++    ctx.roundRect(qz.x - pad, qz.y - pad, qz.size + pad * 2, qz.size + pad * 2, 8);
++    ctx.fill();
++    ctx.restore();
+ 
+-    // Tagline
+-    ctx.fillStyle = '#FFF78C';
++    // ── DATE PILL ──
++    ctx.save();
++    ctx.fillStyle = GREEN_PANEL;
++    ctx.beginPath();
++    ctx.roundRect(w - 300, 1165, 240, 46, 23);
++    ctx.fill();
++    ctx.fillStyle = YELLOW;
++    ctx.font = '800 18px "JetBrains Mono", monospace';
++    ctx.textAlign = 'center';
++    ctx.fillText('28–31 OCT 2026', w - 180, 1194);
++    ctx.restore();
++
++    // Footer tagline
++    ctx.save();
++    ctx.fillStyle = 'rgba(251,230,162,0.7)';
+     ctx.font = '700 13px "JetBrains Mono", monospace';
+     ctx.textAlign = 'center';
+-    ctx.fillText('SHIP FROM PARADISE · 500 BUILDERS · #FRAMEINGOA', w / 2, h - 35);
++    ctx.fillText('SHIP FROM PARADISE · 500 BUILDERS · #FRAMEINGOA', w / 2, h - 30);
++    ctx.restore();
+   },
++
+   pfpPhotoZone: { x: 90, y: 90, width: 900, height: 900 },
+   renderPfpDecorations: (ctx, w, h) => {
+-    ctx.strokeStyle = '#FFF78C';
++    ctx.strokeStyle = YELLOW;
+     ctx.lineWidth = 14;
+     ctx.strokeRect(7, 7, w - 14, h - 14);
+ 
+-    ctx.fillStyle = '#FFF78C';
+-    ctx.font = '900 36px "Space Grotesk", sans-serif';
++    ctx.save();
++    ctx.fillStyle = CREAM;
++    ctx.font = '900 34px "Space Grotesk", sans-serif';
+     ctx.textAlign = 'left';
+-    ctx.fillText('HACKER', 45, 55);
+-
+-    drawHindiText(ctx, 'गोवा', w / 2, 60, 48, '#FF007A');
+-
+-    ctx.fillStyle = '#FFF78C';
+-    ctx.font = '900 36px "Space Grotesk", sans-serif';
++    ctx.fillText('HACKERHOUSE', 45, 55);
++    ctx.fillStyle = PINK;
++    ctx.font = '900 34px system-ui, sans-serif';
+     ctx.textAlign = 'right';
+-    ctx.fillText('HOUSE', w - 45, 55);
++    ctx.fillText('गोवा', w - 45, 55);
++    ctx.restore();
+ 
+-    ctx.fillStyle = '#004D34';
++    ctx.fillStyle = GREEN_PANEL;
+     ctx.fillRect(0, h - 55, w, 55);
+-    ctx.fillStyle = '#FFF78C';
++    ctx.fillStyle = YELLOW;
+     ctx.font = '800 18px "JetBrains Mono", monospace';
+     ctx.textAlign = 'center';
+     ctx.fillText('#FrameInGoa · 28-31 OCT 2026', w / 2, h - 22);
+   },
+ };
+ 
+-// ══════════════════════════════════════════════════════
+-// FRAME 2: HACKER HAVEN (Beach Lounge Hackathon Setup)
+-// ══════════════════════════════════════════════════════
+-const HACKER_HAVEN: FrameConfig = {
+-  id: 'hacker-haven',
+-  name: 'Hacker Haven',
+-  description: 'Beach lounge hackathon setup with laptop workstation & sunset sky.',
+-  paletteMode: 'dark',
+-  bgColor: '#011c14',
+-  photoZone: { x: 120, y: 240, width: 840, height: 680 },
+-  qrZone: { x: 496, y: 1150, size: 84 },
+-  textZones: {
+-    // Hierarchy: name > stack/role > builder title > socials/ID/timestamp
+-    name: { x: 120, y: 970, maxWidth: 840, fontSize: 56, fontFamily: 'display', color: '#FFF78C', weight: '900' },
+-    stack: { x: 120, y: 1042, maxWidth: 700, fontSize: 26, fontFamily: 'mono', color: '#FF007A', weight: '800' },
+-    title: { x: 120, y: 1082, maxWidth: 700, fontSize: 22, fontFamily: 'mono', color: '#00FF96', weight: '600' },
+-    socials: { x: 540, y: 1122, maxWidth: 900, fontSize: 16, fontFamily: 'mono', color: '#00FF96', align: 'center', weight: '700' },
+-    builderId: { x: 540, y: 1242, maxWidth: 500, fontSize: 22, fontFamily: 'mono', color: '#FFF78C', align: 'center', weight: '800' },
+-    timestamp: { x: 540, y: 1272, maxWidth: 500, fontSize: 12, fontFamily: 'mono', color: 'rgba(255,255,255,0.6)', align: 'center' },
+-  },
+-  renderBackground: (ctx, w) => {
+-    const artImg = getFrameImage('/brand/frame_art_hacker_haven.png');
+-    if (artImg && artImg.complete && artImg.naturalWidth > 0) {
+-      ctx.drawImage(artImg, 0, 220, w, 720);
+-    }
+-  },
+-  renderDecorations: (ctx, w, h) => {
+-    ctx.strokeStyle = '#00FF96';
+-    ctx.lineWidth = 6;
+-    ctx.strokeRect(15, 15, w - 30, h - 30);
+-
+-    ctx.fillStyle = '#01281d';
+-    ctx.fillRect(15, 15, w - 30, 185);
+-
+-    ctx.fillStyle = '#FFF78C';
+-    ctx.font = '900 52px "Space Grotesk", sans-serif';
+-    ctx.textAlign = 'left';
+-    ctx.fillText('HACKER HAVEN', 50, 95);
+-
+-    drawHindiText(ctx, 'गोवा', w - 180, 105, 54, '#FF007A');
+-
+-    ctx.fillStyle = '#00FF96';
+-    ctx.font = '800 16px "JetBrains Mono", monospace';
+-    ctx.textAlign = 'left';
+-    ctx.fillText('BEACH LOUNGE RESIDENCY // 28-31 OCT 2026', 50, 155);
+-
+-    ctx.strokeStyle = '#FF007A';
+-    ctx.lineWidth = 5;
+-    ctx.strokeRect(117, 237, 846, 686);
+-
+-    ctx.fillStyle = '#01281d';
+-    ctx.fillRect(40, 935, w - 80, 355);
+-    ctx.strokeStyle = '#00FF96';
+-    ctx.lineWidth = 3;
+-    ctx.strokeRect(40, 935, w - 80, 355);
+-
+-    ctx.fillStyle = '#FFF78C';
+-    ctx.font = '700 13px "JetBrains Mono", monospace';
+-    ctx.textAlign = 'center';
+-    ctx.fillText('LESS NOISE. MORE SIGNAL. // HH GOA 2026', w / 2, h - 35);
+-  },
+-  pfpPhotoZone: { x: 60, y: 60, width: 960, height: 960 },
+-  renderPfpDecorations: (ctx, w, h) => {
+-    ctx.strokeStyle = '#00FF96';
+-    ctx.lineWidth = 8;
+-    ctx.strokeRect(15, 15, w - 30, h - 30);
+-
+-    ctx.fillStyle = '#FFF78C';
+-    ctx.font = '800 20px "JetBrains Mono", monospace';
+-    ctx.textAlign = 'left';
+-    ctx.fillText('HACKER HAVEN', 35, 45);
+-
+-    ctx.textAlign = 'right';
+-    ctx.fillText('HH GOA', w - 35, 45);
+-  },
+-};
+-
+-// ══════════════════════════════════════════════════════
+-// FRAME 3: SUNSET RISO (80s Retro Synthwave Goa Sunset)
+-// ══════════════════════════════════════════════════════
+-const SUNSET_RISO: FrameConfig = {
+-  id: 'sunset-riso',
+-  name: 'Sunset Riso',
+-  description: '80s retro synthwave Goa sunset print with hot pink waves.',
+-  paletteMode: 'light',
+-  bgColor: '#FFF78C',
+-  photoZone: { x: 120, y: 220, width: 840, height: 720 },
+-  qrZone: { x: 496, y: 1160, size: 84 },
+-  textZones: {
+-    // Hierarchy: name > stack/role > builder title > socials/ID/timestamp
+-    name: { x: 120, y: 980, maxWidth: 840, fontSize: 58, fontFamily: 'display', color: '#FF007A', weight: '900' },
+-    stack: { x: 120, y: 1052, maxWidth: 700, fontSize: 28, fontFamily: 'mono', color: '#004D34', weight: '800' },
+-    title: { x: 120, y: 1094, maxWidth: 700, fontSize: 23, fontFamily: 'mono', color: '#021a14', weight: '600' },
+-    socials: { x: 540, y: 1134, maxWidth: 900, fontSize: 17, fontFamily: 'mono', color: '#004D34', align: 'center', weight: '700' },
+-    builderId: { x: 540, y: 1252, maxWidth: 500, fontSize: 22, fontFamily: 'mono', color: '#FF007A', align: 'center', weight: '900' },
+-    timestamp: { x: 540, y: 1280, maxWidth: 500, fontSize: 12, fontFamily: 'mono', color: 'rgba(0,77,52,0.6)', align: 'center' },
+-  },
+-  renderBackground: (ctx, w) => {
+-    const artImg = getFrameImage('/brand/frame_art_sunset_riso.png');
+-    if (artImg && artImg.complete && artImg.naturalWidth > 0) {
+-      ctx.drawImage(artImg, 0, 200, w, 740);
+-    }
+-  },
+-  renderDecorations: (ctx, w, h) => {
+-    ctx.fillStyle = '#FF007A';
+-    ctx.fillRect(20, 20, w - 40, 180);
+-
+-    ctx.fillStyle = '#FFF78C';
+-    ctx.fillRect(12, 12, w - 40, 180);
+-
+-    ctx.strokeStyle = '#004D34';
+-    ctx.lineWidth = 5;
+-    ctx.strokeRect(12, 12, w - 40, h - 40);
+-
+-    // HIGH CONTRAST DEEP EMERALD & PINK
+-    ctx.fillStyle = '#004D34';
+-    ctx.font = '900 48px "Space Grotesk", sans-serif';
+-    ctx.textAlign = 'left';
+-    ctx.fillText('HACKER HOUSE', 100, 100);
+-
+-    drawHindiText(ctx, 'गोवा', 520, 105, 56, '#FF007A');
+-
+-    ctx.fillStyle = '#004D34';
+-    ctx.font = '900 48px "Space Grotesk", sans-serif';
+-    ctx.textAlign = 'right';
+-    ctx.fillText('2026', 980, 100);
+-
+-    ctx.strokeStyle = '#FF007A';
+-    ctx.lineWidth = 6;
+-    ctx.strokeRect(117, 217, 846, 726);
+-
+-    ctx.fillStyle = '#004D34';
+-    ctx.font = '800 15px "JetBrains Mono", monospace';
+-    ctx.textAlign = 'center';
+-    ctx.fillText('✦ PARADISE BUILD STATION · GOA INDIA ✦', w / 2, h - 45);
+-  },
+-  pfpPhotoZone: { x: 80, y: 80, width: 920, height: 920 },
+-  renderPfpDecorations: (ctx, w, h) => {
+-    ctx.strokeStyle = '#FF007A';
+-    ctx.lineWidth = 10;
+-    ctx.strokeRect(10, 10, w - 20, h - 20);
+-
+-    ctx.fillStyle = '#FF007A';
+-    ctx.font = '900 24px "Space Grotesk", sans-serif';
+-    ctx.textAlign = 'center';
+-    ctx.fillText('HACKER GOA HOUSE', w / 2, 50);
+-  },
+-};
+-
+-// ══════════════════════════════════════════════════════
+-// FRAME 4: CYBER PARADISE (Fiber Optics Ocean Build Station)
+-// ══════════════════════════════════════════════════════
+-const CYBER_PARADISE: FrameConfig = {
+-  id: 'cyber-paradise',
+-  name: 'Cyber Paradise',
+-  description: 'Ocean side build station with glowing fiber optics & sunset glow.',
+-  paletteMode: 'dark',
+-  bgColor: '#00281C',
+-  photoZone: { x: 100, y: 240, width: 880, height: 680 },
+-  qrZone: { x: 496, y: 1150, size: 84 },
+-  textZones: {
+-    // Hierarchy: name > stack/role > builder title > socials/ID/timestamp
+-    name: { x: 100, y: 970, maxWidth: 880, fontSize: 56, fontFamily: 'display', color: '#FFFFFF', weight: '900' },
+-    stack: { x: 100, y: 1042, maxWidth: 700, fontSize: 26, fontFamily: 'mono', color: '#00F0FF', weight: '700' },
+-    title: { x: 100, y: 1082, maxWidth: 700, fontSize: 22, fontFamily: 'mono', color: '#FFF78C', weight: '600' },
+-    socials: { x: 540, y: 1122, maxWidth: 900, fontSize: 16, fontFamily: 'mono', color: '#00F0FF', align: 'center', weight: '700' },
+-    builderId: { x: 540, y: 1242, maxWidth: 500, fontSize: 22, fontFamily: 'mono', color: '#FFF78C', align: 'center', weight: '800' },
+-    timestamp: { x: 540, y: 1272, maxWidth: 500, fontSize: 12, fontFamily: 'mono', color: 'rgba(255,255,255,0.6)', align: 'center' },
+-  },
+-  renderBackground: (ctx, w) => {
+-    const artImg = getFrameImage('/brand/frame_art_cyber_paradise.png');
+-    if (artImg && artImg.complete && artImg.naturalWidth > 0) {
+-      ctx.drawImage(artImg, 0, 210, w, 730);
+-    }
+-  },
+-  renderDecorations: (ctx, w, h) => {
+-    ctx.strokeStyle = '#00F0FF';
+-    ctx.lineWidth = 5;
+-    ctx.strokeRect(20, 20, w - 40, h - 40);
+-
+-    ctx.fillStyle = '#001a12';
+-    ctx.fillRect(20, 20, w - 40, 175);
+-
+-    ctx.fillStyle = '#FFFFFF';
+-    ctx.font = '900 48px "Space Grotesk", sans-serif';
+-    ctx.textAlign = 'left';
+-    ctx.fillText('CYBER PARADISE', 50, 95);
+-
+-    drawHindiText(ctx, 'गोवा', w - 180, 105, 54, '#00F0FF');
+-
+-    ctx.fillStyle = '#FFF78C';
+-    ctx.font = '800 15px "JetBrains Mono", monospace';
+-    ctx.textAlign = 'left';
+-    ctx.fillText('HIGH SPEED FIBER STATION // 28-31 OCT 2026', 50, 150);
+-
+-    ctx.strokeStyle = '#00F0FF';
+-    ctx.lineWidth = 4;
+-    ctx.strokeRect(98, 238, 884, 684);
+-
+-    ctx.fillStyle = '#001a12';
+-    ctx.fillRect(40, 930, w - 80, 355);
+-    ctx.strokeStyle = '#00F0FF';
+-    ctx.lineWidth = 2;
+-    ctx.strokeRect(40, 930, w - 80, 355);
+-
+-    ctx.fillStyle = '#FFF78C';
+-    ctx.font = '400 12px "JetBrains Mono", monospace';
+-    ctx.textAlign = 'center';
+-    ctx.fillText('CONFIDENTIAL RESIDENCY BADGE // HH GOA 2026', w / 2, h - 35);
+-  },
+-  pfpPhotoZone: { x: 70, y: 70, width: 940, height: 940 },
+-  renderPfpDecorations: (ctx, w, h) => {
+-    ctx.strokeStyle = '#00F0FF';
+-    ctx.lineWidth = 6;
+-    ctx.strokeRect(20, 20, w - 40, h - 40);
+-
+-    ctx.fillStyle = '#FFFFFF';
+-    ctx.font = '800 16px "JetBrains Mono", monospace';
+-    ctx.textAlign = 'left';
+-    ctx.fillText('CYBER PARADISE', 35, 15);
+-  },
+-};
+-
+-export const FRAMES: FrameConfig[] = [GOA_GENESIS, HACKER_HAVEN, SUNSET_RISO, CYBER_PARADISE];
++export const FRAMES: FrameConfig[] = [HACKERHOUSE_GOA];
+ 
+-export function getFrame(id: string): FrameConfig {
+-  return FRAMES.find(f => f.id === id) || GOA_GENESIS;
++export function getFrame(id?: string): FrameConfig {
++  if (!id) return HACKERHOUSE_GOA;
++  return FRAMES.find((f) => f.id === id) || HACKERHOUSE_GOA;
+ }
